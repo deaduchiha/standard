@@ -6,12 +6,16 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "pages:build": "bunx @cloudflare/next-on-pages",
+    "preview": "bun run pages:build && wrangler pages dev",
+    "deploy": "bun run pages:build && wrangler pages deploy"
   },
   "dependencies": {
+    "@cloudflare/next-on-pages": "^1.13.5",
+    "next": "15.0.2",
     "react": "19.0.0-rc-02c0e824-20241028",
-    "react-dom": "19.0.0-rc-02c0e824-20241028",
-    "next": "15.0.2"
+    "react-dom": "19.0.0-rc-02c0e824-20241028"
   },
   "devDependencies": {
     "typescript": "^5",
