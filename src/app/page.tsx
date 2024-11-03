@@ -11,6 +11,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 export const runtime = "edge";
 
+const LOGIN = [
+  { id: "username", label: "نام کاربری" },
+  { id: "password", label: "رمز عبور" },
+] as const;
+
 const schema = z
   .object({
     username: z
@@ -55,34 +60,25 @@ export default function Home() {
         </CardHeader>
         <CardContent className="mt-6">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2 text-right">
-              <Label htmlFor="username">نام کاربری</Label>
-              <Input
-                {...register("username")}
-                id="username"
-                type="text"
-                placeholder="نام کاربری"
-              />
-              {errors.username && (
-                <span className="mt-2 inline-block text-sm text-red-500">
-                  {errors.username.message}
-                </span>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">رمز عبور</Label>
-              <Input
-                {...register("password")}
-                placeholder="******"
-                id="password"
-                type="password"
-              />
-              {errors.password && (
-                <span className="mt-2 inline-block text-sm text-red-500">
-                  {errors.password.message}
-                </span>
-              )}
-            </div>
+            {LOGIN.map(({ id, label }) => (
+              <div key={id} className="space-y-2 text-right">
+                <Label htmlFor={label}>{label}</Label>
+                <Input
+                  {...register(id)}
+                  id={id}
+                  type="text"
+                  placeholder={label}
+                  className={
+                    errors[id] && "border-red-500 focus-visible:ring-0"
+                  }
+                />
+                {errors[id] && (
+                  <span className="mt-2 inline-block text-sm text-red-500">
+                    {errors[id].message}
+                  </span>
+                )}
+              </div>
+            ))}
 
             <Button type="submit" className="w-full">
               ورود
