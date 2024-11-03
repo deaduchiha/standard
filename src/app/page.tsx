@@ -11,22 +11,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 export const runtime = "edge";
 
-const LOGIN = [
-  { id: "username", label: "نام کاربری" },
-  { id: "password", label: "رمز عبور" },
-] as const;
-
-const schema = z
-  .object({
-    username: z
-      .string()
-      .min(1, { message: "لطفا نام کاربری خود را وارد کنید" }),
-    password: z.string().min(1, { message: "لطفا رمز عبور خود را وارد کنید" }),
-  })
-  .required();
-
-type TLogin = z.infer<typeof schema>;
-
 export default function Home() {
   const {
     handleSubmit,
@@ -89,3 +73,19 @@ export default function Home() {
     </div>
   );
 }
+
+const LOGIN = [
+  { id: "username", label: "نام کاربری" },
+  { id: "password", label: "رمز عبور" },
+] as const;
+
+const schema = z
+  .object({
+    username: z
+      .string()
+      .min(1, { message: "لطفا نام کاربری خود را وارد کنید" }),
+    password: z.string().min(1, { message: "لطفا رمز عبور خود را وارد کنید" }),
+  })
+  .required();
+
+type TLogin = z.infer<typeof schema>;
