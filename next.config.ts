@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 import { setupDevPlatform } from "@cloudflare/next-on-pages/next-dev";
 
 const nextConfig: NextConfig = {
-  // optimizePackageImports: ["@chakra-ui/react"],
   /* config options here */
 };
 
