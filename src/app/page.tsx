@@ -8,20 +8,50 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { login, TLoginBody } from "@/api/auth";
+import { LoaderCircle } from "lucide-react";
+import { useEffect } from "react";
 
 export const runtime = "edge";
 
 export default function Home() {
+  const router = useRouter();
+  const token = Cookies.get("token");
+
+  useEffect(() => {
+    if (token) {
+      router.push("/dashboard");
+    }
+  }, [router, token]);
+
   const {
     handleSubmit,
     formState: { errors },
     register,
+    setError,
+    clearErrors,
   } = useForm<TLogin>({
     resolver: zodResolver(schema),
   });
 
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["login"],
+    mutationFn: (data: TLoginBody) => login(data),
+  });
+
   const onSubmit = (data: TLogin) => {
-    console.log(data);
+    mutate(data, {
+      async onSuccess({ token }) {
+        Cookies.set("token", token);
+        router.push("/dashboard");
+      },
+      onError(err) {
+        setError("root", { message: err.message });
+      },
+    });
   };
 
   return (
@@ -48,7 +78,13 @@ export default function Home() {
               <div key={id} className="space-y-2 text-right">
                 <Label htmlFor={label}>{label}</Label>
                 <Input
-                  {...register(id)}
+                  {...register(id, {
+                    onChange() {
+                      if (errors.root) {
+                        clearErrors("root");
+                      }
+                    },
+                  })}
                   id={id}
                   type="text"
                   placeholder={label}
@@ -64,9 +100,12 @@ export default function Home() {
               </div>
             ))}
 
-            <Button type="submit" className="w-full">
-              ورود
+            <Button disabled={isPending} type="submit" className="w-full">
+              {isPending ? <LoaderCircle className="animate-spin" /> : "ورود"}
             </Button>
+            <p className="text-sm m-0 p-0 text-error-500 text-center">
+              {errors.root && errors.root.message}
+            </p>
           </form>
         </CardContent>
       </Card>

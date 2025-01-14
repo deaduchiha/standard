@@ -1,12 +1,20 @@
 "use client";
 import { ReactNode } from "react";
-import { DirectionProvider } from "@radix-ui/react-direction";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const Providers = ({ children }: { children: ReactNode }) => {
   return (
-    <>
-      <DirectionProvider dir="rtl">{children}</DirectionProvider>
-    </>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 };
 
