@@ -53,7 +53,7 @@ const UsersModal = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent>
+      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle>{showTitle()}</DialogTitle>
           <DialogDescription>{showDescription()}</DialogDescription>
