@@ -17,7 +17,7 @@ import Image from "next/image";
 
 export function AppSidebar() {
   return (
-    <Sidebar side="right">
+    <Sidebar variant="floating" side="right" className="bg-slate-100">
       <SidebarHeader className="p-4">
         <Image src={"/logo.svg"} alt="logo" width={100} height={64} />
       </SidebarHeader>
