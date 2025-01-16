@@ -19,4 +19,7 @@ export type TUser = {
 export type TUsers = {
   statusCode: number;
   users: TUser[];
+  sort: string;
+  order: "asc" | "desc";
+  totalPages: number;
 };

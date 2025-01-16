@@ -8,6 +8,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { ADMIN_DASHBOARD } from "@/constants/dashboard";
 import Link from "next/link";
@@ -16,8 +17,9 @@ import Image from "next/image";
 // import { Badge } from "./ui/badge";
 
 export function AppSidebar() {
+  const { setOpenMobile } = useSidebar();
   return (
-    <Sidebar variant="floating" side="right" className="bg-slate-100">
+    <Sidebar variant="floating" side="right">
       <SidebarHeader className="p-4">
         <Image src={"/logo.svg"} alt="logo" width={100} height={64} />
       </SidebarHeader>
@@ -26,7 +28,11 @@ export function AppSidebar() {
         <SidebarMenu>
           {ADMIN_DASHBOARD.map((item, index) => (
             <SidebarMenuItem key={index}>
-              <SidebarMenuButton asChild className="justify-between">
+              <SidebarMenuButton
+                onClick={() => setOpenMobile(false)}
+                asChild
+                className="justify-between"
+              >
                 <Link href={item.href} className="flex items-center gap-3 py-2">
                   <div className="flex items-center gap-3">
                     <item.icon className="h-5 w-5 text-slate-500" />
@@ -46,7 +52,10 @@ export function AppSidebar() {
                 <SidebarMenuSub>
                   {item.subItems.map((subItem, subIndex) => (
                     <SidebarMenuSubItem key={subIndex}>
-                      <SidebarMenuSubButton asChild>
+                      <SidebarMenuSubButton
+                        onClick={() => setOpenMobile(false)}
+                        asChild
+                      >
                         <Link href={subItem.href} className="text-sm">
                           {subItem.label}
                         </Link>

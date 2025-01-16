@@ -9,14 +9,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useUsersStore } from "@/store/dashboard/use-user-store";
 import { TUser } from "@/types/api/users";
-import { Ellipsis } from "lucide-react";
+import { Edit, Ellipsis, KeyRound, Trash2 } from "lucide-react";
 import { useCallback } from "react";
 
 export default function RowActions({ account }: { account: TUser }) {
   const { setOpen, setData, setStep } = useUsersStore();
 
   const handleAction = useCallback(
-    (action: "edit" | "delete") => {
+    (action: "edit" | "delete" | "change-password") => {
       setStep(action);
       setOpen(true);
       setData(account);
@@ -41,7 +41,11 @@ export default function RowActions({ account }: { account: TUser }) {
       <DropdownMenuContent align="start">
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={() => handleAction("edit")}>
-            <span>ویرایش</span>
+            <span>ویرایش</span> <Edit />
+          </DropdownMenuItem>
+
+          <DropdownMenuItem onClick={() => handleAction("change-password")}>
+            <span>تغییر رمز عبور</span> <KeyRound />
           </DropdownMenuItem>
         </DropdownMenuGroup>
 
@@ -51,7 +55,7 @@ export default function RowActions({ account }: { account: TUser }) {
           onClick={() => handleAction("delete")}
           className="text-destructive focus:text-destructive"
         >
-          <span>حدف</span>
+          <span>حدف</span> <Trash2 />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

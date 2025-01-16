@@ -15,10 +15,10 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
         outline: "text-foreground",
-        CEO: "bg-amber-400 text-black hover:bg-amber-500",
-        technicalInspector: "bg-red-500 text-white hover:bg-red-600",
-        technicalManager: "bg-blue-500 text-white hover:bg-blue-600",
-        accountant: "bg-purple-500 text-white hover:bg-purple-600",
+        CEO: "bg-slate-500 text-white hover:bg-slate-600", // Medium-dark
+        technicalInspector: "bg-gray-300 text-black hover:bg-gray-400", // Lighter
+        technicalManager: "bg-zinc-700 text-white hover:bg-zinc-800", // Dark
+        accountant: "bg-stone-200 text-black hover:bg-stone-300",
       },
     },
     defaultVariants: {

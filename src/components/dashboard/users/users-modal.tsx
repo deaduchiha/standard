@@ -7,6 +7,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useEffect } from "react";
+import UsersForm from "./users-form";
+import ChangePassword from "./change-password";
+import DeleteUser from "./delete-user";
 
 const UsersModal = () => {
   const { open, setOpen, setData, setStep, step } = useUsersStore();
@@ -19,6 +22,8 @@ const UsersModal = () => {
         return "حذف کاربر";
       case "edit":
         return "ویرایش کاربر";
+      case "change-password":
+        return "تغییر رمز عبور";
       default:
         return null;
     }
@@ -32,6 +37,8 @@ const UsersModal = () => {
         return "شما در حال حذف کاربر مورد نظر می باشید";
       case "edit":
         return "شما در حال ویرایش کاربر مورد نظر می باشید.";
+      case "change-password":
+        return "شما در حال تغییر رمز عبور کاربر مورد نظر می باشید.";
       default:
         return null;
     }
@@ -52,7 +59,9 @@ const UsersModal = () => {
           <DialogDescription>{showDescription()}</DialogDescription>
         </DialogHeader>
 
-        <div>hello</div>
+        {(step === "create" || step === "edit") && <UsersForm />}
+        {step === "change-password" && <ChangePassword />}
+        {step === "delete" && <DeleteUser />}
       </DialogContent>
     </Dialog>
   );

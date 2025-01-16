@@ -39,34 +39,54 @@ import {
   ListFilter,
   Plus,
 } from "lucide-react";
-import { useId, useRef, useState } from "react";
+import { useCallback, useId, useRef, useState } from "react";
 import TablePagination from "@/components/dashboard/users/table-pagination";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { users } from "@/api/users";
 import columns from "@/components/dashboard/users/table-columns";
 import UsersModal from "@/components/dashboard/users/users-modal";
+import { useUsersStore } from "@/store/dashboard/use-user-store";
 
 export default function Component() {
   const id = useId();
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
   const inputRef = useRef<HTMLInputElement>(null);
-
+  const { setOpen, setStep } = useUsersStore();
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: "fullname",
       desc: false,
     },
   ]);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   const { data } = useQuery({
-    queryKey: ["users"],
-    queryFn: users,
+    queryKey: [
+      "users",
+      {
+        pageIndex: pagination.pageIndex,
+        pageSize: pagination.pageSize,
+        sorting,
+      },
+    ],
+    queryFn: () =>
+      users({
+        page: pagination.pageIndex + 1, // if your API is 1-based
+        limit: pagination.pageSize,
+        sort: sorting.length ? sorting[0].id : "fullname",
+        order: sorting.length && sorting[0].desc ? "desc" : "asc",
+      }),
+    placeholderData: keepPreviousData,
   });
+
+  const createUserHandler = useCallback(() => {
+    setStep("create");
+    setOpen(true);
+  }, [setOpen, setStep]);
 
   const table = useReactTable({
     data: data?.users || [],
@@ -87,6 +107,9 @@ export default function Component() {
       columnFilters,
       columnVisibility,
     },
+    manualPagination: true,
+    pageCount: data?.totalPages,
+    manualSorting: true,
   });
 
   return (
@@ -167,7 +190,7 @@ export default function Component() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="flex items-center gap-3">
+        <div onClick={createUserHandler} className="flex items-center gap-3">
           <Button className="ml-auto" variant="outline">
             ایجاد کاربر جدید
             <Plus
@@ -270,7 +293,7 @@ export default function Component() {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  کاربری وجود ندارد.
                 </TableCell>
               </TableRow>
             )}

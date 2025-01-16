@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { vazirmatn } from "./fonts";
 import Providers from "./Providers";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "استاندار",
@@ -16,8 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa" dir="rtl">
-      <body className={vazirmatn.className}>
+      <body className={`${vazirmatn.className} ${vazirmatn.variable}`}>
         <Providers>{children}</Providers>
+        <Toaster richColors className="font-vazir" theme="light" />
       </body>
     </html>
   );

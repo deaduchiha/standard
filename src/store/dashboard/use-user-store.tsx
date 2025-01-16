@@ -1,7 +1,7 @@
 import { TUser } from "@/types/api/users";
 import { create } from "zustand";
 
-type TSteps = "create" | "delete" | "edit" | null;
+type TSteps = "create" | "delete" | "edit" | "change-password" | null;
 
 interface IUserStore {
   open: boolean;
