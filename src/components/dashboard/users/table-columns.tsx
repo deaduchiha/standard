@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { ColumnDef, FilterFn } from "@tanstack/react-table";
 import RowActions from "./row-actions";
 import { TUser } from "@/types/api/users";
-import { currentRole } from "@/lib/functionst";
+import { currentRole } from "@/lib/functions";
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<TUser> = (row, columnId, filterValue) => {

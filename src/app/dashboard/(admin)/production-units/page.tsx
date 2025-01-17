@@ -40,23 +40,23 @@ import {
   Plus,
 } from "lucide-react";
 import { useCallback, useId, useRef, useState } from "react";
-import TablePagination from "@/components/dashboard/users/table-pagination";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { users } from "@/api/users";
-import columns from "@/components/dashboard/users/table-columns";
-import UsersModal from "@/components/dashboard/users/users-modal";
-import { useUsersStore } from "@/store/dashboard/use-user-store";
+import { getProductionUnits } from "@/api/production-units";
+import columns from "@/components/dashboard/production-units/table-columns";
+import TablePagination from "@/components/dashboard/production-units/pagination";
+import { useProductUnits } from "@/store/dashboard/use-product-units-store";
+import ProductUnitsModal from "@/components/dashboard/production-units/modal";
 
-export default function Component() {
+export default function Page() {
   const id = useId();
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const inputRef = useRef<HTMLInputElement>(null);
-  const { setOpen, setStep } = useUsersStore();
+  const { setOpen, setStep } = useProductUnits();
 
   const [sorting, setSorting] = useState<SortingState>([
     {
-      id: "fullname",
+      id: "name",
       desc: false,
     },
   ]);
@@ -65,12 +65,11 @@ export default function Component() {
     pageSize: 10,
   });
 
-  const searchTerm =
-    columnFilters.find((cf) => cf.id === "fullname")?.value ?? "";
+  const searchTerm = columnFilters.find((cf) => cf.id === "name")?.value ?? "";
 
   const { data } = useQuery({
     queryKey: [
-      "users",
+      "production-units",
       {
         pageIndex: pagination.pageIndex,
         pageSize: pagination.pageSize,
@@ -79,24 +78,24 @@ export default function Component() {
       },
     ],
     queryFn: () =>
-      users({
+      getProductionUnits({
         page: pagination.pageIndex + 1, // if your API is 1-based
         limit: pagination.pageSize,
-        sort: sorting.length ? sorting[0].id : "fullname",
+        sort: sorting.length ? sorting[0].id : "name",
         order: sorting.length && sorting[0].desc ? "desc" : "asc",
         search: String(searchTerm),
       }),
     placeholderData: keepPreviousData,
   });
 
-  const createUserHandler = useCallback(() => {
+  const createProductUnitHandler = useCallback(() => {
     setStep("create");
     setOpen(true);
   }, [setOpen, setStep]);
 
   const table = useReactTable({
-    data: data?.users || [],
-    columns: columns,
+    data: data?.productionUnits || [],
+    columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
@@ -131,27 +130,27 @@ export default function Component() {
               ref={inputRef}
               className={cn(
                 "peer min-w-60 ps-9",
-                Boolean(table.getColumn("fullname")?.getFilterValue()) && "pe-9"
+                Boolean(table.getColumn("name")?.getFilterValue()) && "pe-9"
               )}
               value={
-                (table.getColumn("fullname")?.getFilterValue() ?? "") as string
+                (table.getColumn("name")?.getFilterValue() ?? "") as string
               }
               onChange={(e) =>
-                table.getColumn("fullname")?.setFilterValue(e.target.value)
+                table.getColumn("name")?.setFilterValue(e.target.value)
               }
               placeholder="جست و جو"
               type="text"
-              aria-label="Filter by fullname or email"
+              aria-label="Filter by name or email"
             />
             <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
               <ListFilter size={16} strokeWidth={2} aria-hidden="true" />
             </div>
-            {Boolean(table.getColumn("fullname")?.getFilterValue()) && (
+            {Boolean(table.getColumn("name")?.getFilterValue()) && (
               <button
                 className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
                 aria-label="Clear filter"
                 onClick={() => {
-                  table.getColumn("fullname")?.setFilterValue("");
+                  table.getColumn("name")?.setFilterValue("");
                   if (inputRef.current) {
                     inputRef.current.focus();
                   }
@@ -175,7 +174,7 @@ export default function Component() {
                 />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
+            <DropdownMenuContent align="end">
               <DropdownMenuLabel>ستون</DropdownMenuLabel>
               {table
                 .getAllColumns()
@@ -197,9 +196,12 @@ export default function Component() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div onClick={createUserHandler} className="flex items-center gap-3">
+        <div
+          onClick={createProductUnitHandler}
+          className="flex items-center gap-3"
+        >
           <Button className="ml-auto" variant="outline">
-            ایجاد کاربر جدید
+            ایجاد واحد تولیدی
             <Plus
               className="opacity-60"
               size={16}
@@ -211,7 +213,7 @@ export default function Component() {
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-lg border border-border bg-background">
+      <div className="overflow-hidden w-full rounded-lg border border-border bg-background">
         <Table className="table-fixed">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -300,7 +302,7 @@ export default function Component() {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  کاربری وجود ندارد.
+                  واحد صنفی ای موجود نیست
                 </TableCell>
               </TableRow>
             )}
@@ -310,7 +312,7 @@ export default function Component() {
 
       {/* Pagination */}
       <TablePagination table={table} id={id} />
-      <UsersModal />
+      <ProductUnitsModal />
     </div>
   );
 }

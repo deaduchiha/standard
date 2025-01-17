@@ -1,18 +1,42 @@
-import { BarChart2, FileText, Home, Settings, Users } from "lucide-react";
+import {
+  Building2,
+  FlaskConical,
+  Home,
+  LucideIcon,
+  SwatchBook,
+  Users,
+} from "lucide-react";
 
-export const ADMIN_DASHBOARD = [
+interface MenuItem {
+  icon: LucideIcon;
+  label: string;
+  href: string;
+  subItems?: MenuItem[]; // Optional, recursive structure for sub-items
+}
+
+export const ADMIN_DASHBOARD: MenuItem[] = [
   { icon: Home, label: "داشبورد", href: "/dashboard" },
-  { icon: BarChart2, label: "آنالیز", href: "/dashboard/analyze" },
   { icon: Users, label: "کاربران", href: "/dashboard/users" },
   {
-    icon: FileText,
-    label: "پرونده ها",
-    href: "/dashboard/documents",
-    subItems: [
-      { label: "گزارشات", href: "/dashboard/documents/reports" },
-      { label: "فاکتور ها", href: "/dashboard/documents/invoices" },
-      { label: "مخاطبین", href: "/dashboard/documents/contracts" },
-    ],
+    icon: Building2,
+    label: "واحد تولیدی",
+    href: "/dashboard/production-units",
   },
-  { icon: Settings, label: "تنظیمات", href: "/dashboard/settings" },
+  { icon: SwatchBook, label: "نمونه", href: "/dashboard/samples" },
+  {
+    icon: FlaskConical,
+    label: "آزمایشگاه",
+    href: "/dashboard/collaborating-labs",
+  },
+  // {
+  //   icon: FileText,
+  //   label: "پرونده ها",
+  //   href: "/dashboard/documents",
+  //   subItems: [
+  //     { label: "گزارشات", href: "/dashboard/documents/reports" },
+  //     { label: "فاکتور ها", href: "/dashboard/documents/invoices" },
+  //     { label: "مخاطبین", href: "/dashboard/documents/contracts" },
+  //   ],
+  // },
+  // { icon: Settings, label: "تنظیمات", href: "/dashboard/settings" },
 ];
