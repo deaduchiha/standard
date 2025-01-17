@@ -12,7 +12,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useUsersStore } from "@/store/dashboard/use-user-store";
-import { TUserSchema, userSchema } from "@/types/validation";
+import { TUserSchema, userSchema } from "@/types/validations/users";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
@@ -144,7 +145,6 @@ const UsersForm = () => {
               </SelectTrigger>
 
               <SelectContent>
-                <SelectItem value="CEO">مدیر عامل</SelectItem>
                 <SelectItem value="technicalInspector">بازرس فنی</SelectItem>
                 <SelectItem value="technicalManager">مدیر فنی</SelectItem>
                 <SelectItem value="accountant">حسابدار</SelectItem>

@@ -1,9 +1,9 @@
 import { api } from "@/lib/services";
 import { TUsers, TWhoami } from "@/types/api/users";
-import { TUserSchema } from "@/types/validation";
+import { TUserSchema } from "@/types/validations/users";
 
 type TUsersQueries = {
-  search?: number;
+  search?: string;
   page?: number;
   limit?: number;
   sort?: string;
@@ -65,4 +65,13 @@ export const changePassword = ({
 export const deleteUser = (id: number) =>
   api(`users/${id}`, {
     method: "DELETE",
+  });
+
+export const profileChangePassword = (data: {
+  oldPassword: string;
+  newPassword: string;
+}) =>
+  api("users/change-password", {
+    method: "PATCH",
+    body: data,
   });

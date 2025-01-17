@@ -53,6 +53,7 @@ export default function Component() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const inputRef = useRef<HTMLInputElement>(null);
   const { setOpen, setStep } = useUsersStore();
+
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: "fullname",
@@ -64,6 +65,11 @@ export default function Component() {
     pageSize: 10,
   });
 
+  const searchTerm =
+    columnFilters.find((cf) => cf.id === "fullname")?.value ?? "";
+
+  console.log(columnFilters);
+
   const { data } = useQuery({
     queryKey: [
       "users",
@@ -71,6 +77,7 @@ export default function Component() {
         pageIndex: pagination.pageIndex,
         pageSize: pagination.pageSize,
         sorting,
+        searchTerm,
       },
     ],
     queryFn: () =>
@@ -79,6 +86,7 @@ export default function Component() {
         limit: pagination.pageSize,
         sort: sorting.length ? sorting[0].id : "fullname",
         order: sorting.length && sorting[0].desc ? "desc" : "asc",
+        search: String(searchTerm),
       }),
     placeholderData: keepPreviousData,
   });
@@ -110,6 +118,7 @@ export default function Component() {
     manualPagination: true,
     pageCount: data?.totalPages,
     manualSorting: true,
+    manualFiltering: true,
   });
 
   return (
