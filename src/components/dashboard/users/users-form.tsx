@@ -29,6 +29,7 @@ const UsersForm = () => {
     formState: { errors },
     setError,
     setValue,
+    getValues,
   } = useForm<TUserSchema>({
     resolver: zodResolver(userSchema),
     defaultValues: data
@@ -49,6 +50,8 @@ const UsersForm = () => {
     }
   }, [setValue, step]);
 
+  const hasPassword = getValues("isCreate");
+
   const { mutate, isPending } = useMutation({
     mutationKey: ["create-user"],
     mutationFn: (data: TUserSchema) => createUser(data),
@@ -60,8 +63,11 @@ const UsersForm = () => {
   });
 
   const onSubmit = handleSubmit((user) => {
-    if (step === "create") {
-      mutate(user, {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { isCreate, ...u } = user;
+
+    if (step === "create" && hasPassword === true) {
+      mutate(u as TUserSchema, {
         onSuccess() {
           toast.success("کاربر شما با موفقیت ساخته شد.", {
             position: "top-center",
