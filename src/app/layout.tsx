@@ -17,6 +17,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa" dir="rtl">
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      ></meta>
       <body className={`${vazirmatn.className} ${vazirmatn.variable}`}>
         <Providers>{children}</Providers>
         <Toaster richColors className="font-vazir" theme="light" />
