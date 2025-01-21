@@ -22,3 +22,9 @@ export const createProductionUnits = (body: TProductionUnits) =>
     body,
     method: "POST",
   });
+
+export const editProductionUnits = (body: TProductionUnits, id: number) =>
+  api(`/production-units/${id}`, {
+    body,
+    method: "PUT",
+  });

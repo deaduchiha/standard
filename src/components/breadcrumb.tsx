@@ -67,4 +67,5 @@ const PAGES = {
   dashboard: "داشبورد",
   users: "کاربران",
   "production units": "واحد تولیدی",
+  profile: "پروفایل",
 };

@@ -1,50 +1,51 @@
 import {
-  createProductionUnits,
-  editProductionUnits,
-} from "@/api/production-units";
+  editCollaboratingLabs,
+  postCollaboratingLabs,
+} from "@/api/collaborating-labs";
 import { queryClient } from "@/app/Providers";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useProductUnits } from "@/store/dashboard/use-product-units-store";
+import { useCollaboratingLabs } from "@/store/dashboard/use-collaborating-labs-store";
 import {
-  productionUnitsSchema,
-  TProductionUnits,
-} from "@/types/validations/production-units";
+  collaboratingLabsSchema,
+  TCreateCollaboratingLab,
+} from "@/types/validations/collaborating-labs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-const ProductionUnitsForm = () => {
-  const { data, setOpen } = useProductUnits();
+const CollaboratingLabsForm = () => {
+  const { data, setOpen } = useCollaboratingLabs();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<TProductionUnits>({
+  } = useForm<TCreateCollaboratingLab>({
     defaultValues: data ?? {},
-    resolver: zodResolver(productionUnitsSchema),
+    resolver: zodResolver(collaboratingLabsSchema),
   });
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["create-production-unit"],
-    mutationFn: (body: TProductionUnits) => createProductionUnits(body),
+    mutationFn: (body: TCreateCollaboratingLab) => postCollaboratingLabs(body),
   });
 
   const { mutate: editMutate, isPending: editIsPending } = useMutation({
     mutationKey: ["edit-production-unit"],
-    mutationFn: (body: TProductionUnits) => editProductionUnits(body, data!.id),
+    mutationFn: (body: TCreateCollaboratingLab) =>
+      editCollaboratingLabs(body, data!.id),
   });
 
   const onSubmit = handleSubmit((d) => {
     if (!data) {
       mutate(d, {
         onSuccess() {
-          queryClient.invalidateQueries({ queryKey: ["production-units"] });
+          queryClient.invalidateQueries({ queryKey: ["collaborating-labs"] });
           toast.success("واحد تولیدی شما با موفقیت ایجاد شد", {
             position: "top-center",
           });
@@ -57,7 +58,7 @@ const ProductionUnitsForm = () => {
     } else {
       editMutate(d, {
         onSuccess() {
-          queryClient.invalidateQueries({ queryKey: ["production-units"] });
+          queryClient.invalidateQueries({ queryKey: ["collaborating-labs"] });
           toast.success("واحد تولیدی شما با موفقیت ویرایش شد", {
             position: "top-center",
           });
@@ -147,18 +148,13 @@ const ProductionUnitsForm = () => {
       </div>
 
       <div>
-        <Label>مسئول کنترل کیفیت</Label>
-        <Input {...register("QCName")} placeholder="مسئول کنترل کیفیت" />
+        <Label>نام مدیر فنی/تضمین</Label>
+        <Input
+          {...register("technicalManagerName")}
+          placeholder="نام مدیر فنی/تضمین"
+        />
         <span className="text-error-500 text-xs">
-          {errors.QCName && errors.QCName.message}
-        </span>
-      </div>
-
-      <div>
-        <Label>شماره مسئول کنترل کیفیت</Label>
-        <Input {...register("QCPhone")} placeholder="شماره مسئول کنترل کیفیت" />
-        <span className="text-error-500 text-xs">
-          {errors.QCPhone && errors.QCPhone.message}
+          {errors.technicalManagerName && errors.technicalManagerName.message}
         </span>
       </div>
 
@@ -184,4 +180,4 @@ const ProductionUnitsForm = () => {
   );
 };
 
-export default ProductionUnitsForm;
+export default CollaboratingLabsForm;

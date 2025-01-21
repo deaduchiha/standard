@@ -1,4 +1,4 @@
-import { deleteGetProductionUnits } from "@/api/production-units";
+import { deleteCollaboratingLabs } from "@/api/collaborating-labs";
 import { queryClient } from "@/app/Providers";
 import { Button } from "@/components/ui/button";
 import { useProductUnits } from "@/store/dashboard/use-product-units-store";
@@ -6,12 +6,12 @@ import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
 
-const DeleteProductionUnit = () => {
+const DeleteCollaboratingLabs = () => {
   const { setOpen, data } = useProductUnits();
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ["delete-production-units"],
-    mutationFn: () => deleteGetProductionUnits(data!.id),
+    mutationKey: ["delete-collaborate"],
+    mutationFn: () => deleteCollaboratingLabs(data!.id),
   });
 
   return (
@@ -21,7 +21,7 @@ const DeleteProductionUnit = () => {
           mutate(undefined, {
             onSuccess() {
               queryClient.invalidateQueries({ queryKey: ["production-units"] });
-              toast.success("واحد تولیدی مورد نظر با موفقیت حذف شد", {
+              toast.success("آزمایشگاه مورد نظر با موفقیت حذف شد", {
                 position: "top-center",
               });
               setOpen(false);
@@ -46,4 +46,4 @@ const DeleteProductionUnit = () => {
   );
 };
 
-export default DeleteProductionUnit;
+export default DeleteCollaboratingLabs;
