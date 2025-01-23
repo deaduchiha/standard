@@ -68,4 +68,6 @@ const PAGES = {
   users: "کاربران",
   "production units": "واحد تولیدی",
   profile: "پروفایل",
+  samples: "نمونه ها",
+  "collaborating labs": "آزمایشگاه همکار",
 };

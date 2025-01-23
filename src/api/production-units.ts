@@ -5,14 +5,14 @@ import { TProductionUnits } from "@/types/validations/production-units";
 export const getProductionUnits = (
   query: TQueryParams
 ): Promise<{
-  productionUnits: TProductionUnits[];
+  productionUnits: (TProductionUnits & { id: number })[];
   totalPages: number;
 }> =>
   api("/production-units", {
     query,
   });
 
-export const deleteGetProductionUnits = (id: number) =>
+export const deleteProductionUnits = (id: number) =>
   api(`/production-units/${id}`, {
     method: "DELETE",
   });

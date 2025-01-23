@@ -25,7 +25,7 @@ export const ADMIN_DASHBOARD: MenuItem[] = [
   { icon: SwatchBook, label: "نمونه", href: "/dashboard/samples" },
   {
     icon: FlaskConical,
-    label: "آزمایشگاه",
+    label: "آزمایشگاه همکار",
     href: "/dashboard/collaborating-labs",
   },
   // {

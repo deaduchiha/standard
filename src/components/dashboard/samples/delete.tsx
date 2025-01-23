@@ -1,17 +1,17 @@
-import { deleteProductionUnits } from "@/api/production-units";
+import { deleteSample } from "@/api/samples";
 import { queryClient } from "@/app/Providers";
 import { Button } from "@/components/ui/button";
-import { useProductUnits } from "@/store/dashboard/use-product-units-store";
+import { useSampleStore } from "@/store/dashboard/use-sample-store";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
 
-const DeleteProductionUnit = () => {
-  const { setOpen, data } = useProductUnits();
+const DeleteSample = () => {
+  const { setOpen, data } = useSampleStore();
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ["delete-production-units"],
-    mutationFn: () => deleteProductionUnits(data!.id),
+    mutationKey: ["delete-sample"],
+    mutationFn: () => deleteSample(data!.id),
   });
 
   return (
@@ -20,8 +20,8 @@ const DeleteProductionUnit = () => {
         onClick={() =>
           mutate(undefined, {
             onSuccess() {
-              queryClient.invalidateQueries({ queryKey: ["production-units"] });
-              toast.success("واحد تولیدی مورد نظر با موفقیت حذف شد", {
+              queryClient.invalidateQueries({ queryKey: ["samples"] });
+              toast.success("نمونه مورد نظر با موفقیت حذف شد", {
                 position: "top-center",
               });
               setOpen(false);
@@ -46,4 +46,4 @@ const DeleteProductionUnit = () => {
   );
 };
 
-export default DeleteProductionUnit;
+export default DeleteSample;
