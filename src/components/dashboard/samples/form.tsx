@@ -21,7 +21,11 @@ const SamplesForm = () => {
   const { data, setOpen } = useSampleStore();
 
   const form = useForm<TCreateSample>({
-    defaultValues: data ?? {},
+    defaultValues: data ?? {
+      controlSample: false,
+      expirationDate: "2022-10-9",
+      productionDate: "2021-10-1",
+    },
     resolver: zodResolver(samplesSchema),
   });
   const {
@@ -29,7 +33,10 @@ const SamplesForm = () => {
     handleSubmit,
     formState: { errors },
     setError,
+    watch,
   } = form;
+
+  console.log(watch("controlSample"));
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["create-sample"],
@@ -132,6 +139,18 @@ const SamplesForm = () => {
         />
         <span className="text-error-500 text-xs">
           {errors.batchNo && errors.batchNo.message}
+        </span>
+      </div>
+
+      <div>
+        <Label>پروانه ساخت</Label>
+        <Input
+          aria-invalid={!!errors.constructionLicense}
+          {...register("constructionLicense")}
+          placeholder="پروانه ساخت"
+        />
+        <span className="text-error-500 text-xs">
+          {errors.constructionLicense && errors.constructionLicense.message}
         </span>
       </div>
 
