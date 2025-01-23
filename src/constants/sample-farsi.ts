@@ -14,7 +14,7 @@ export const industryTypeMap: Record<TIndustryType, string> = {
   "Electrical and Electronics": "برق والكترونيك",
   "Biomedical Engineering": "مهندسي پزشكي",
   "Construction and Mining": "ساختماني ومعدني",
-  "Weights and Measures": "وزن ها و مقياس ها",
+  "Weights and Measures": "اوزان و مقياس ها",
   "Safety, Health, Energy, and Environment": "ايمني، سلامت، انرژي و محيط زيست",
   "Mechanics and Metallurgy": "مكانيك فلز شناسي",
   "Precious Metals": "فلزات گرانبها",
