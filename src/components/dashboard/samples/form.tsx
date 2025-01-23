@@ -65,7 +65,7 @@ const SamplesForm = () => {
     } else {
       editMutate(d, {
         onSuccess() {
-          queryClient.invalidateQueries({ queryKey: ["production-units"] });
+          queryClient.invalidateQueries({ queryKey: ["samples"] });
           toast.success("واحد تولیدی شما با موفقیت ویرایش شد", {
             position: "top-center",
           });
