@@ -16,8 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import LocationMarker from "./map/location-marker";
-import { TCreateSample } from "@/types/validations/samples";
+import LocationMarker from "./location-marker";
 
 function MapEvents({
   setPosition,
@@ -39,10 +38,12 @@ const customIcon = L.icon({
   popupAnchor: [0, -38], // point from which the popup should open relative to the iconAnchor
 });
 
-type TProps = { form: UseFormReturn<TCreateSample> };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type TProps = { form: UseFormReturn<any> };
 
-const MapCoordinatesForm: FC<TProps> = ({}) => {
+const MapCoordinatesForm: FC<TProps> = ({ form }) => {
   const [position, setPosition] = useState<LatLngTuple>([36.550985, 53.045827]);
+  const { setValue } = form;
 
   const handleMapClick = (latlng: L.LatLng) => {
     setPosition([latlng.lat, latlng.lng]);
@@ -64,8 +65,10 @@ const MapCoordinatesForm: FC<TProps> = ({}) => {
     }
   };
 
+  const [open, setOpen] = useState<boolean>(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant={"outline"}>انتخاب نقشه</Button>
       </DialogTrigger>
@@ -113,7 +116,13 @@ const MapCoordinatesForm: FC<TProps> = ({}) => {
                 </Button>
                 <Button
                   onClick={() => {
-                    console.log(position);
+                    setValue("lat", position[0]);
+                    setValue("lng", position[1]);
+
+                    form.clearErrors("lat");
+                    form.clearErrors("lng");
+
+                    setOpen(false);
                   }}
                   type="submit"
                   variant={"submit"}

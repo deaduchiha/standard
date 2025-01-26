@@ -3,6 +3,7 @@ import {
   postCollaboratingLabs,
 } from "@/api/collaborating-labs";
 import { queryClient } from "@/app/Providers";
+import MapCoordinatesForm from "@/components/map/map";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,15 +21,17 @@ import { toast } from "sonner";
 const CollaboratingLabsForm = () => {
   const { data, setOpen } = useCollaboratingLabs();
 
+  const form = useForm<TCreateCollaboratingLab>({
+    defaultValues: data ?? {},
+    resolver: zodResolver(collaboratingLabsSchema),
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<TCreateCollaboratingLab>({
-    defaultValues: data ?? {},
-    resolver: zodResolver(collaboratingLabsSchema),
-  });
+  } = form;
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["create-production-unit"],
@@ -74,8 +77,8 @@ const CollaboratingLabsForm = () => {
   return (
     <form className="space-y-4" onSubmit={onSubmit}>
       <div>
-        <Label>نام واحد تولیدی</Label>
-        <Input {...register("name")} placeholder="نام واحد تولیدی" />
+        <Label>نام آزمایشگاه</Label>
+        <Input {...register("name")} placeholder="نام آزمایشگاه" />
         <span className="text-error-500 text-xs">
           {errors.name && errors.name.message}
         </span>
@@ -106,6 +109,14 @@ const CollaboratingLabsForm = () => {
       </div>
 
       {/* lat lng */}
+      <div>
+        <MapCoordinatesForm form={form} />
+        <div>
+          <span className="text-error-500 text-xs">
+            {errors.lat && errors.lng && "لطفا آدرس مورد نظر را انتخاب کنید"}
+          </span>
+        </div>
+      </div>
 
       <div>
         <Label>کد پستی</Label>

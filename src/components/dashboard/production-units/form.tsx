@@ -3,6 +3,7 @@ import {
   editProductionUnits,
 } from "@/api/production-units";
 import { queryClient } from "@/app/Providers";
+import MapCoordinatesForm from "@/components/map/map";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,15 +21,16 @@ import { toast } from "sonner";
 const ProductionUnitsForm = () => {
   const { data, setOpen } = useProductUnits();
 
+  const form = useForm<TProductionUnits>({
+    defaultValues: data ?? {},
+    resolver: zodResolver(productionUnitsSchema),
+  });
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<TProductionUnits>({
-    defaultValues: data ?? {},
-    resolver: zodResolver(productionUnitsSchema),
-  });
+  } = form;
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["create-production-unit"],
@@ -97,6 +99,14 @@ const ProductionUnitsForm = () => {
       </div>
 
       <div>
+        <Label>نام تحاری</Label>
+        <Input {...register("brandName")} placeholder="نام تحاری" />
+        <span className="text-error-500 text-xs">
+          {errors.brandName && errors.brandName.message}
+        </span>
+      </div>
+
+      <div>
         <Label>آدرس</Label>
         <Input {...register("address")} placeholder="آدرس" />
         <span className="text-error-500 text-xs">
@@ -105,6 +115,14 @@ const ProductionUnitsForm = () => {
       </div>
 
       {/* lat lng */}
+      <div>
+        <MapCoordinatesForm form={form} />
+        <div>
+          <span className="text-error-500 text-xs">
+            {errors.lat && errors.lng && "لطفا آدرس مورد نظر را انتخاب کنید"}
+          </span>
+        </div>
+      </div>
 
       <div>
         <Label>کد پستی</Label>

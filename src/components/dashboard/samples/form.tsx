@@ -18,7 +18,6 @@ import SendingDuty from "./parts/sending-duty";
 import ProductionUnit from "./parts/production-unit";
 import ProductionDate from "./parts/production-date";
 import ExpirationDate from "./parts/expiration-date";
-import MapCoordinatesForm from "./parts/map";
 
 const SamplesForm = () => {
   const { data, setOpen } = useSampleStore();
@@ -140,12 +139,6 @@ const SamplesForm = () => {
         <span className="text-error-500 text-xs">
           {errors.expirationDate && errors.expirationDate.message}
         </span>
-      </div>
-
-      {/* lat lng */}
-
-      <div>
-        <MapCoordinatesForm form={form} />
       </div>
 
       <div>
