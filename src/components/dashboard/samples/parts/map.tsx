@@ -90,7 +90,7 @@ const MapCoordinatesForm: FC<TProps> = ({}) => {
                   <TileLayer
                     minZoom={10}
                     maxZoom={21}
-                    url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png"
+                    url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png?api_key=0f64042a-8004-45bc-8a59-b6bb6861c1ba"
                     attribution={`&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`}
                   />
 
