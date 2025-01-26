@@ -28,24 +28,26 @@ const ProductionUnit: FC<TProps> = ({ form }) => {
     <Controller
       control={control}
       name="productionUnitId"
-      render={({ field }) => (
-        <Select
-          onValueChange={field.onChange}
-          defaultValue={String(field.value)}
-        >
-          <SelectTrigger aria-invalid={!!errors.productionUnitId}>
-            <SelectValue placeholder="واحد تولیدی را انتخاب کنید" />
-          </SelectTrigger>
+      render={({ field }) => {
+        return (
+          <Select
+            onValueChange={field.onChange}
+            defaultValue={field.value ? String(field.value) : undefined}
+          >
+            <SelectTrigger aria-invalid={!!errors.productionUnitId}>
+              <SelectValue placeholder="واحد تولیدی را انتخاب کنید" />
+            </SelectTrigger>
 
-          <SelectContent>
-            {data?.productionUnits.map((p) => (
-              <SelectItem key={p.id} value={String(p.id)}>
-                {p.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      )}
+            <SelectContent>
+              {data?.productionUnits.map((p) => (
+                <SelectItem key={p.id} value={String(p.id)}>
+                  {p.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        );
+      }}
     />
   );
 };

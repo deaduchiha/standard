@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 export const currentRole = (role: string) => {
   switch (role) {
     case "CEO":
@@ -9,4 +11,14 @@ export const currentRole = (role: string) => {
     case "accountant":
       return "حسابدار";
   }
+};
+
+export const formatPersianDate = (date: string) => {
+  const dt = DateTime.fromISO(date);
+
+  const persian = dt
+    .setLocale("fa") // Use Persian (Farsi) language
+    .reconfigure({ outputCalendar: "persian" });
+
+  return persian.toLocaleString(DateTime.DATE_FULL);
 };

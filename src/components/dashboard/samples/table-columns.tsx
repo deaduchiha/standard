@@ -8,6 +8,7 @@ import {
   placeOfSamplingType,
   sendingDutyType,
 } from "@/constants/sample-farsi";
+import { formatPersianDate } from "@/lib/functions";
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<TSample> = (row, columnId, filterValue) => {
@@ -54,11 +55,30 @@ const columns: ColumnDef<TSample>[] = [
     size: 180,
   },
   {
+    header: "تاریخ ساخت",
+    accessorKey: "productionDate",
+    cell: ({ row }) => {
+      const { productionDate } = row.original;
+
+      return <div>{formatPersianDate(productionDate)}</div>;
+    },
+    size: 230,
+  },
+  {
+    header: "تاریخ انقضا",
+    accessorKey: "expirationDate",
+    cell: ({ row }) => {
+      const { expirationDate } = row.original;
+
+      return <div>{formatPersianDate(expirationDate)}</div>;
+    },
+    size: 230,
+  },
+  {
     header: "پروانه ساخت",
     accessorKey: "constructionLicense",
     size: 230,
   },
-
   {
     header: "سری ساخت",
     accessorKey: "batchNo",

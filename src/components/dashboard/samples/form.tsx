@@ -16,6 +16,9 @@ import PlaceOfSampling from "./parts/place-of-sampling";
 import ControlSample from "./parts/control-sample";
 import SendingDuty from "./parts/sending-duty";
 import ProductionUnit from "./parts/production-unit";
+import ProductionDate from "./parts/production-date";
+import ExpirationDate from "./parts/expiration-date";
+import MapCoordinatesForm from "./parts/map";
 
 const SamplesForm = () => {
   const { data, setOpen } = useSampleStore();
@@ -23,8 +26,6 @@ const SamplesForm = () => {
   const form = useForm<TCreateSample>({
     defaultValues: data ?? {
       controlSample: false,
-      expirationDate: "2022-10-9",
-      productionDate: "2021-10-1",
     },
     resolver: zodResolver(samplesSchema),
   });
@@ -33,10 +34,7 @@ const SamplesForm = () => {
     handleSubmit,
     formState: { errors },
     setError,
-    watch,
   } = form;
-
-  console.log(watch("controlSample"));
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["create-sample"],
@@ -128,7 +126,27 @@ const SamplesForm = () => {
         </span>
       </div>
 
+      <div>
+        <Label>تاریخ ساخت</Label>
+        <ProductionDate form={form} />
+        <span className="text-error-500 text-xs">
+          {errors.productionDate && errors.productionDate.message}
+        </span>
+      </div>
+
+      <div>
+        <Label>تاریخ انقضا</Label>
+        <ExpirationDate form={form} />
+        <span className="text-error-500 text-xs">
+          {errors.expirationDate && errors.expirationDate.message}
+        </span>
+      </div>
+
       {/* lat lng */}
+
+      <div>
+        <MapCoordinatesForm />
+      </div>
 
       <div>
         <Label>سری ساخت</Label>

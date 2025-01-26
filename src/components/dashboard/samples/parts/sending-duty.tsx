@@ -18,8 +18,6 @@ const SendingDuty: FC<TProps> = ({ form }) => {
     formState: { errors },
   } = form;
 
-  console.log(errors);
-
   return (
     <Controller
       control={control}

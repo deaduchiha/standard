@@ -65,12 +65,14 @@ export const samplesSchema = z
       .min(1, { message: "لطفا مشخصات فراورده را وارد کنید" }),
     inspectionType,
     IndustryType,
-    productionDate: z
-      .string()
-      .min(1, { message: "لطفا تاریخ تولید را وارد کنید" }),
-    expirationDate: z
-      .string()
-      .min(1, { message: "لطفا تاریخ انقضا را وارد کنید" }),
+    productionDate: z.coerce
+      .string({
+        message: "لطفا تاریخ تولید را وارد کنید",
+      })
+      .or(z.string()),
+    expirationDate: z.coerce
+      .date({ message: "لطفا تاریخ انقضا را وارد کنید" })
+      .or(z.string()),
     constructionLicense: z
       .string()
       .min(1, { message: "لطفا پروانه ساخت را وارد کنید" }),
