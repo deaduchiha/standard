@@ -90,8 +90,10 @@ const MapCoordinatesForm: FC<TProps> = ({}) => {
                   <TileLayer
                     minZoom={10}
                     maxZoom={21}
-                    url="https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png"
+                    url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png"
+                    attribution={`&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`}
                   />
+
                   <MapEvents setPosition={handleMapClick} />
                   {position && (
                     <LocationMarker
@@ -107,16 +109,17 @@ const MapCoordinatesForm: FC<TProps> = ({}) => {
                   onClick={handleGetCurrentLocation}
                   className="w-full mb-2"
                 >
-                  Get Current Location
+                  مکان فعلی
                 </Button>
                 <Button
                   onClick={() => {
                     console.log(position);
                   }}
                   type="submit"
+                  variant={"submit"}
                   className="w-full"
                 >
-                  Submit Coordinates
+                  ثبت
                 </Button>
               </div>
             </CardContent>

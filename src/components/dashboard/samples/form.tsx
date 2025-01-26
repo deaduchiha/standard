@@ -145,7 +145,7 @@ const SamplesForm = () => {
       {/* lat lng */}
 
       <div>
-        <MapCoordinatesForm />
+        <MapCoordinatesForm form={form} />
       </div>
 
       <div>
