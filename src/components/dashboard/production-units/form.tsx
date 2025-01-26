@@ -47,6 +47,10 @@ const ProductionUnitsForm = () => {
       mutate(d, {
         onSuccess() {
           queryClient.invalidateQueries({ queryKey: ["production-units"] });
+          queryClient.invalidateQueries({
+            queryKey: ["production-units-select"],
+          });
+
           toast.success("واحد تولیدی شما با موفقیت ایجاد شد", {
             position: "top-center",
           });
@@ -60,6 +64,9 @@ const ProductionUnitsForm = () => {
       editMutate(d, {
         onSuccess() {
           queryClient.invalidateQueries({ queryKey: ["production-units"] });
+          queryClient.invalidateQueries({
+            queryKey: ["production-units-select"],
+          });
           toast.success("واحد تولیدی شما با موفقیت ویرایش شد", {
             position: "top-center",
           });

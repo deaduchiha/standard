@@ -8,16 +8,26 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-  useSidebar,
+  // useSidebar,
 } from "@/components/ui/sidebar";
-import { ADMIN_DASHBOARD } from "@/constants/dashboard";
+import { ADMIN_DASHBOARD, MenuItem } from "@/constants/dashboard";
 import Link from "next/link";
 import Footer from "./sidebar/footer";
 import Image from "next/image";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "./ui/collapsible";
+import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
+import { ChevronDown, ChevronLeft } from "lucide-react";
+import { useState } from "react";
+import { usePathname } from "next/navigation";
 // import { Badge } from "./ui/badge";
 
 export function AppSidebar() {
-  const { setOpenMobile } = useSidebar();
+  // const { setOpenMobile } = useSidebar();
   return (
     <Sidebar variant="floating" side="right">
       <SidebarHeader className="p-4">
@@ -26,43 +36,17 @@ export function AppSidebar() {
 
       <SidebarContent>
         <SidebarMenu>
-          {ADMIN_DASHBOARD.map((item, index) => (
-            <SidebarMenuItem key={index}>
-              <SidebarMenuButton
-                onClick={() => setOpenMobile(false)}
-                asChild
-                className="justify-between"
-              >
-                <Link href={item.href} className="flex items-center gap-3 py-2">
-                  <div className="flex items-center gap-3">
-                    <item.icon className="h-5 w-5 text-slate-500" />
-                    <span className="text-sm font-medium">{item.label}</span>
-                  </div>
-                  {/* {item.badge && (
-                    <Badge
-                      variant="secondary"
-                      className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300"
-                    >
-                      {item.badge}
-                    </Badge>
-                  )} */}
-                </Link>
-              </SidebarMenuButton>
-              {item.subItems && (
-                <SidebarMenuSub>
-                  {item.subItems.map((subItem, subIndex) => (
-                    <SidebarMenuSubItem key={subIndex}>
-                      <SidebarMenuSubButton
-                        onClick={() => setOpenMobile(false)}
-                        asChild
-                      >
-                        <Link href={subItem.href} className="text-sm">
-                          {subItem.label}
-                        </Link>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  ))}
-                </SidebarMenuSub>
+          {ADMIN_DASHBOARD.map((item) => (
+            <SidebarMenuItem key={item.label}>
+              {item.subItems ? (
+                <CollapsibleMenuItem item={item} />
+              ) : (
+                <SidebarMenuButton asChild>
+                  <Link href={item.href}>
+                    {item.icon && <item.icon className="mr-2 h-4 w-4" />}
+                    <span>{item.label}</span>
+                  </Link>
+                </SidebarMenuButton>
               )}
             </SidebarMenuItem>
           ))}
@@ -72,5 +56,47 @@ export function AppSidebar() {
       {/* side bar footer */}
       <Footer />
     </Sidebar>
+  );
+}
+
+function CollapsibleMenuItem({ item }: { item: MenuItem }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = item.subItems?.some((subItem) => pathname === subItem.href);
+
+  return (
+    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <CollapsibleTrigger asChild>
+        <Button
+          variant="ghost"
+          className={cn(
+            "w-full justify-between",
+            isActive && "bg-accent text-accent-foreground"
+          )}
+        >
+          <span className="flex items-center">
+            {item.icon && <item.icon className="mr-0 h-4 w-4" />}
+            <span>{item.label}</span>
+          </span>
+          {isOpen ? (
+            <ChevronDown className="h-4 w-4" />
+          ) : (
+            <ChevronLeft className="h-4 w-4" />
+          )}
+        </Button>
+      </CollapsibleTrigger>
+      <CollapsibleContent>
+        <SidebarMenuSub>
+          {item.subItems?.map((subItem) => (
+            <SidebarMenuSubItem key={subItem.label}>
+              <SidebarMenuSubButton asChild>
+                <Link href={subItem.href}>{subItem.label}</Link>
+              </SidebarMenuSubButton>
+            </SidebarMenuSubItem>
+          ))}
+        </SidebarMenuSub>
+      </CollapsibleContent>
+    </Collapsible>
   );
 }

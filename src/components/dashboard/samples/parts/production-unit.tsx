@@ -20,7 +20,7 @@ const ProductionUnit: FC<TProps> = ({ form }) => {
   } = form;
 
   const { data } = useQuery({
-    queryKey: ["production-units"],
+    queryKey: ["production-units-select"],
     queryFn: () => getProductionUnits({}),
   });
 

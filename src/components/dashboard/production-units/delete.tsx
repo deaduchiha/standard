@@ -21,6 +21,10 @@ const DeleteProductionUnit = () => {
           mutate(undefined, {
             onSuccess() {
               queryClient.invalidateQueries({ queryKey: ["production-units"] });
+              queryClient.invalidateQueries({
+                queryKey: ["production-units-select"],
+              });
+
               toast.success("واحد تولیدی مورد نظر با موفقیت حذف شد", {
                 position: "top-center",
               });
