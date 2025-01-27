@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { FormData } from "../form";
+import { TFormData } from "../form";
 import { FC } from "react";
 import {
   Select,
@@ -15,7 +15,7 @@ type TProps = {
 };
 
 const Receiver: FC<TProps> = ({ fieldName }) => {
-  const { control } = useFormContext<FormData>();
+  const { control } = useFormContext<TFormData>();
 
   return (
     <Controller

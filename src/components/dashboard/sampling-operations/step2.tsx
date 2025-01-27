@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { FormData } from "./form";
+import type { TFormData } from "./form";
 import { useQuery } from "@tanstack/react-query";
 import { getSampleByProductsUnitId } from "@/api/samples";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,7 +11,7 @@ import { useSampleStore } from "@/store/dashboard/use-sample-store";
 import SampleModal from "../samples/modal";
 
 export default function Step2() {
-  const { watch, setValue } = useFormContext<FormData>();
+  const { watch, setValue } = useFormContext<TFormData>();
   const step2Values = watch("step2");
   const productId = watch("step1");
 

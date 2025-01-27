@@ -13,11 +13,17 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import type { FormData } from "./form";
+import type { TFormData } from "./form";
 import Step1 from "./step1";
 import Step2 from "./step2";
 import Step3 from "./step3";
 import { toast } from "sonner";
+import Step4 from "./step4";
+import { useMutation } from "@tanstack/react-query";
+import {
+  postSamplingOperations,
+  TPostSamplingOperators,
+} from "@/api/sampling-operations";
 
 const hasPostalBarcode = z.discriminatedUnion("receiver", [
   z.object({
@@ -34,6 +40,30 @@ const hasPostalBarcode = z.discriminatedUnion("receiver", [
   }),
 ]);
 
+const hasSamplerTransportation = z.discriminatedUnion("samplerTransportation", [
+  z.object({
+    samplerTransportation: z.literal(false),
+  }),
+  z.object({
+    samplerTransportation: z.literal(true),
+    samplerTransportationDistance: z.coerce
+      .number({
+        message: "لطفا فاصله حمل و نقل نمونه را وارد کنید",
+      })
+      .min(1, { message: "لطفا فاصله حمل و نقل نمونه را وارد کنید" }),
+    samplerTransportationStop: z.coerce
+      .number({
+        message: "لطفا تعداد توقف حمل و نقل نمونه را وارد کنید",
+      })
+      .min(1, { message: "لطفا تعداد توقف حمل و نقل نمونه را وارد کنید" }),
+    samplerTransportationPrice: z.coerce
+      .number({
+        message: "لطفا قیمت حمل و نقل نمونه را وارد کنید",
+      })
+      .min(1, { message: "لطفا قیمت حمل و نقل نمونه را وارد کنید" }),
+  }),
+]);
+
 export const formSchema = z.object({
   step1: z.coerce.number(),
   step2: z.array(
@@ -46,8 +76,8 @@ export const formSchema = z.object({
     z
       .object({
         sampleId: z.string().or(z.number()),
-        collaboratingLabId: z
-          .string()
+        collaboratingLabId: z.coerce
+          .number()
           .min(1, { message: "آزمایشگاه را انتخاب کنید" }),
         deliveryDate: z
           .date({ message: "تاریخ تحویل را انتخاب کنید" })
@@ -59,15 +89,36 @@ export const formSchema = z.object({
       })
       .and(hasPostalBarcode)
   ),
+  step4: z
+    .object({
+      state: z.boolean().default(false),
+      number: z.coerce
+        .number({ message: "لطفا عدد وارد کنید" })
+        .min(1, { message: "لطفا شماره را وارد کنید" }),
+      pricePerUnit: z.coerce
+        .number({
+          message: "لطفا قیمت هر نمونه را وارد کنید",
+        })
+        .min(1, { message: "لطفا قیمت هر نمونه را وارد کنید" }),
+      transportationPrice: z.coerce
+        .number({
+          message: "لطفا قیمت جابجایی را وارد کنید",
+        })
+        .min(1, { message: "لطفا قیمت جابجایی را وارد کنید" }),
+    })
+    .and(hasSamplerTransportation),
 });
 
 export function Stepper() {
   const [step, setStep] = useState(1);
-  const methods = useForm<FormData>({
+  const methods = useForm<TFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       step2: [],
       step3: [],
+      step4: {
+        samplerTransportation: false,
+      },
     },
   });
 
@@ -77,18 +128,34 @@ export function Stepper() {
   useEffect(() => {
     // Update step3 when step2 changes
     const newStep3 = step2Values.map((sampleId) => ({
-      sampleId: sampleId.id,
+      sampleId: +sampleId.id,
       collaboratingLabId: "",
       deliveryDate: "",
       receiver: "Lab",
       postal_barcode: "",
     }));
-    setValue("step3", newStep3 as FormData["step3"]);
+    setValue("step3", newStep3 as unknown as TFormData["step3"]);
   }, [step2Values, setValue]);
 
-  const onSubmit = (data: FormData) => {
+  const { mutate } = useMutation({
+    mutationKey: ["post-sampling-operators"],
+    mutationFn: (body: TPostSamplingOperators) => postSamplingOperations(body),
+  });
+
+  const onSubmit = (data: TFormData) => {
     console.log(data);
-    // Handle form submission here
+    mutate(
+      {
+        productionUnitId: +data.step1,
+        sampleLabs: data.step3,
+        payment: data.step4,
+      },
+      {
+        onSuccess(d) {
+          console.log(d);
+        },
+      }
+    );
   };
 
   const nextStep = () => {
@@ -110,7 +177,7 @@ export function Stepper() {
     if (step === 3) {
       trigger("step3").then((isValid) => {
         if (isValid) {
-          setStep(3);
+          setStep(4);
         } else {
           toast.error("لطفا همه فیلدها را پر کنید", {
             position: "top-center",
@@ -118,7 +185,7 @@ export function Stepper() {
         }
       });
     } else {
-      setStep((prevStep) => Math.min(prevStep + 1, 3));
+      setStep((prevStep) => Math.min(prevStep + 1, 4));
     }
   };
 
@@ -129,20 +196,21 @@ export function Stepper() {
       <Card className="w-full max-h-[70svh] overflow-y-scroll no-scrollbar  mx-auto">
         <CardHeader>
           <CardTitle>عملیات</CardTitle>
-          <Progress value={(step / 3) * 100} className="w-full" />
+          <Progress value={(step / 4) * 100} className="w-full" />
         </CardHeader>
         <CardContent>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             {step === 1 && <Step1 />}
             {step === 2 && <Step2 />}
             {step === 3 && <Step3 />}
+            {step === 4 && <Step4 />}
           </form>
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button onClick={prevStep} disabled={step === 1} variant="outline">
             قبلی
           </Button>
-          {step < 3 ? (
+          {step < 4 ? (
             <Button onClick={nextStep}>بعدی</Button>
           ) : (
             <Button onClick={methods.handleSubmit(onSubmit)}>ثبت عملیات</Button>

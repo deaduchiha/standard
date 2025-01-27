@@ -47,6 +47,7 @@ const ProductionUnitsForm = () => {
       mutate(d, {
         onSuccess() {
           queryClient.invalidateQueries({ queryKey: ["production-units"] });
+          queryClient.invalidateQueries({ queryKey: ["production-unit-ope"] });
           queryClient.invalidateQueries({
             queryKey: ["production-units-select"],
           });
@@ -64,6 +65,7 @@ const ProductionUnitsForm = () => {
       editMutate(d, {
         onSuccess() {
           queryClient.invalidateQueries({ queryKey: ["production-units"] });
+          queryClient.invalidateQueries({ queryKey: ["production-unit-ope"] });
           queryClient.invalidateQueries({
             queryKey: ["production-units-select"],
           });

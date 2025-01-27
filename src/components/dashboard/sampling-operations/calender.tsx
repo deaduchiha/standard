@@ -5,7 +5,7 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import persian from "react-date-object/calendars/persian";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import { FormData } from "./form";
+import { TFormData } from "./form";
 
 type TProps = {
   fieldName: `step3.${number}.deliveryDate`;
@@ -13,7 +13,7 @@ type TProps = {
 };
 
 const Step3Calendar: FC<TProps> = ({ fieldName, label }) => {
-  const { control } = useFormContext<FormData>();
+  const { control } = useFormContext<TFormData>();
 
   return (
     <Controller

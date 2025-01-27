@@ -1,0 +1,14 @@
+import { TFormData } from "@/components/dashboard/sampling-operations/form";
+import { api } from "@/lib/services";
+
+export type TPostSamplingOperators = {
+  productionUnitId: number;
+  sampleLabs: TFormData["step3"];
+  payment: TFormData["step4"];
+};
+
+export const postSamplingOperations = (body: TPostSamplingOperators) =>
+  api("sampling-operations", {
+    method: "POST",
+    body,
+  });

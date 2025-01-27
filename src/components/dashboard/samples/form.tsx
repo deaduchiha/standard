@@ -57,6 +57,9 @@ const SamplesForm = () => {
   });
 
   const onSubmit = handleSubmit((d) => {
+    if (isSampleOperator) {
+      d.productionUnitId = +productionId!;
+    }
     if (!data) {
       mutate(d, {
         onSuccess() {

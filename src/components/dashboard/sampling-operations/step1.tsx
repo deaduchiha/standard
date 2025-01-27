@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { FormData } from "./form";
+import { TFormData } from "./form";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProductUnits } from "@/store/dashboard/use-product-units-store";
@@ -12,10 +12,10 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Step1() {
-  const { control } = useFormContext<FormData>();
+  const { control } = useFormContext<TFormData>();
   const { setOpen, setStep } = useProductUnits();
   const { data, isLoading } = useQuery({
-    queryKey: ["production-unit"],
+    queryKey: ["production-unit-ope"],
     queryFn: () => getProductionUnits({}),
   });
 
@@ -54,16 +54,17 @@ export default function Step1() {
                 <Skeleton className="w-20 h-4" />
               </>
             ) : (
-              data?.productionUnits.map((pu) => (
-                <div key={pu.id} className="flex items-center gap-2">
-                  <Label htmlFor={String(pu.id)}>{pu.name}</Label>
-                  <RadioGroupItem
-                    className="aria-[checked]:fill-red-500"
-                    value={String(pu.id)}
-                    id={String(pu.id)}
-                  />
-                </div>
-              ))
+              <div className="space-y-5">
+                {data?.productionUnits.map((pu) => (
+                  <div
+                    key={pu.id}
+                    className="flex justify-end items-center gap-2"
+                  >
+                    <Label htmlFor={String(pu.id)}>{pu.name}</Label>
+                    <RadioGroupItem value={String(pu.id)} id={String(pu.id)} />
+                  </div>
+                ))}
+              </div>
             )}
           </RadioGroup>
         )}

@@ -3,7 +3,7 @@ import React, { useCallback } from "react";
 import { useFormContext, useFieldArray } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { FormData } from "./form";
+import type { TFormData } from "./form";
 import Step3Calendar from "./calender";
 import Receiver from "./parts/receiver";
 import { Button } from "@/components/ui/button";
@@ -19,7 +19,7 @@ export default function Step3() {
     formState: { errors },
     getValues,
     control,
-  } = useFormContext<FormData>();
+  } = useFormContext<TFormData>();
 
   const { setOpen, setStep } = useCollaboratingLabs();
   const createProductUnitHandler = useCallback(() => {
@@ -35,10 +35,10 @@ export default function Step3() {
   const step2Values = getValues("step2");
   const receiver = watch("step3");
 
-  const addAnotherField = (sampleId: string | number) => {
+  const addAnotherField = (sampleId: number) => {
     append({
-      sampleId,
-      collaboratingLabId: "",
+      sampleId: +sampleId,
+      collaboratingLabId: 1,
       deliveryDate: "",
       receiver: "Lab",
     });
@@ -49,7 +49,8 @@ export default function Step3() {
     if (!acc[field.sampleId]) {
       acc[field.sampleId] = [];
     }
-    acc[field.sampleId].push(field);
+    field.sampleId = +field.sampleId;
+    acc[+field.sampleId].push(field);
     return acc;
   }, {} as Record<string | number, typeof fields>);
 
@@ -64,9 +65,7 @@ export default function Step3() {
       </div>
 
       {Object.entries(groupedFields).map(([sampleId, sampleFields]) => {
-        const step2Index = step2Values.findIndex(
-          (s) => s.id.toString() === sampleId.toString()
-        );
+        const step2Index = step2Values.findIndex((s) => s.id === +sampleId);
         return (
           <div key={sampleId} className="space-y-4 p-4 border rounded">
             <div className="flex justify-between items-center">
@@ -76,7 +75,7 @@ export default function Step3() {
                   {step2Values[step2Index]?.label || ""}
                 </span>
               </h3>
-              <Button type="button" onClick={() => addAnotherField(sampleId)}>
+              <Button type="button" onClick={() => addAnotherField(+sampleId)}>
                 افزودن آزمایشگاه
               </Button>
             </div>
@@ -110,6 +109,7 @@ export default function Step3() {
                         </p>
                       )}
                     </div>
+
                     <div>
                       <Label htmlFor={`step3.${index}.deliveryDate`}>
                         تاریخ تحویل
@@ -124,6 +124,7 @@ export default function Step3() {
                         </p>
                       )}
                     </div>
+
                     <div>
                       <Label htmlFor={`step3.${index}.receiver`}>
                         دریافت کننده

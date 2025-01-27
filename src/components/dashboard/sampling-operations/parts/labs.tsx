@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { FormData } from "../form";
+import { TFormData } from "../form";
 import { FC } from "react";
 import {
   Select,
@@ -16,7 +16,7 @@ type TProps = {
 };
 
 const Labs: FC<TProps> = ({ fieldName }) => {
-  const { control } = useFormContext<FormData>();
+  const { control } = useFormContext<TFormData>();
 
   const { data } = useQuery({
     queryKey: ["collaborating-labs-stepper"],
@@ -28,7 +28,10 @@ const Labs: FC<TProps> = ({ fieldName }) => {
       name={fieldName}
       control={control}
       render={({ field }) => (
-        <Select onValueChange={field.onChange} defaultValue={field.value}>
+        <Select
+          onValueChange={(value) => field.onChange(Number(value))}
+          defaultValue={String(field.value)}
+        >
           <SelectTrigger>
             <SelectValue placeholder="انتخاب آزمایشگاه همکار" />
           </SelectTrigger>
