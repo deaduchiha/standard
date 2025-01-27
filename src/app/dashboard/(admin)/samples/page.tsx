@@ -89,7 +89,7 @@ export default function Page() {
     placeholderData: keepPreviousData,
   });
 
-  const createProductUnitHandler = useCallback(() => {
+  const createSampleHandler = useCallback(() => {
     setStep("create");
     setOpen(true);
   }, [setOpen, setStep]);
@@ -204,10 +204,7 @@ export default function Page() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div
-          onClick={createProductUnitHandler}
-          className="flex items-center gap-3"
-        >
+        <div onClick={createSampleHandler} className="flex items-center gap-3">
           <Button className="ml-auto" variant="outline">
             ایجاد نمونه
             <Plus

@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { useQuery } from "@tanstack/react-query";
 import { getProductionUnits } from "@/api/production-units";
+import { useSampleStore } from "@/store/dashboard/use-sample-store";
 
 type TProps = { form: UseFormReturn<TCreateSample> };
 
@@ -18,6 +19,7 @@ const ProductionUnit: FC<TProps> = ({ form }) => {
     control,
     formState: { errors },
   } = form;
+  const { productionId } = useSampleStore();
 
   const { data } = useQuery({
     queryKey: ["production-units-select"],
@@ -29,10 +31,16 @@ const ProductionUnit: FC<TProps> = ({ form }) => {
       control={control}
       name="productionUnitId"
       render={({ field }) => {
+        console.log(field.value);
+
         return (
           <Select
             onValueChange={field.onChange}
-            defaultValue={field.value ? String(field.value) : undefined}
+            defaultValue={
+              field.value
+                ? String(field.value)
+                : String(productionId) ?? undefined
+            }
           >
             <SelectTrigger aria-invalid={!!errors.productionUnitId}>
               <SelectValue placeholder="واحد تولیدی را انتخاب کنید" />

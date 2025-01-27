@@ -49,6 +49,9 @@ const CollaboratingLabsForm = () => {
       mutate(d, {
         onSuccess() {
           queryClient.invalidateQueries({ queryKey: ["collaborating-labs"] });
+          queryClient.invalidateQueries({
+            queryKey: ["collaborating-labs-stepper"],
+          });
           toast.success("واحد تولیدی شما با موفقیت ایجاد شد", {
             position: "top-center",
           });
@@ -62,6 +65,9 @@ const CollaboratingLabsForm = () => {
       editMutate(d, {
         onSuccess() {
           queryClient.invalidateQueries({ queryKey: ["collaborating-labs"] });
+          queryClient.invalidateQueries({
+            queryKey: ["collaborating-labs-stepper"],
+          });
           toast.success("واحد تولیدی شما با موفقیت ویرایش شد", {
             position: "top-center",
           });

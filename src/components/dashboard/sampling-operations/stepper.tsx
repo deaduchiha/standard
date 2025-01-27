@@ -126,7 +126,7 @@ export function Stepper() {
 
   return (
     <FormProvider {...methods}>
-      <Card className="w-full max-h-[70svh] overflow-y-scroll no-scrollbar max-w-2xl mx-auto">
+      <Card className="w-full max-h-[70svh] overflow-y-scroll no-scrollbar  mx-auto">
         <CardHeader>
           <CardTitle>عملیات</CardTitle>
           <Progress value={(step / 3) * 100} className="w-full" />

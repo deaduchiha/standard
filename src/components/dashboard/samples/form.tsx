@@ -18,9 +18,10 @@ import SendingDuty from "./parts/sending-duty";
 import ProductionUnit from "./parts/production-unit";
 import ProductionDate from "./parts/production-date";
 import ExpirationDate from "./parts/expiration-date";
+import { useEffect } from "react";
 
 const SamplesForm = () => {
-  const { data, setOpen } = useSampleStore();
+  const { data, setOpen, isSampleOperator, productionId } = useSampleStore();
 
   const form = useForm<TCreateSample>({
     defaultValues: data ?? {
@@ -33,7 +34,17 @@ const SamplesForm = () => {
     handleSubmit,
     formState: { errors },
     setError,
+    setValue,
+    reset,
   } = form;
+
+  useEffect(() => {
+    if (isSampleOperator) {
+      setValue("productionUnitId", productionId!);
+      reset({ controlSample: false, productionUnitId: productionId! });
+    }
+    console.log(form.watch("productionUnitId"));
+  }, [data, form, isSampleOperator, productionId, reset, setValue]);
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["create-sample"],
@@ -50,6 +61,7 @@ const SamplesForm = () => {
       mutate(d, {
         onSuccess() {
           queryClient.invalidateQueries({ queryKey: ["samples"] });
+          queryClient.invalidateQueries({ queryKey: ["get-samples-by-pid"] });
           toast.success("واحد تولیدی شما با موفقیت ایجاد شد", {
             position: "top-center",
           });
@@ -63,6 +75,8 @@ const SamplesForm = () => {
       editMutate(d, {
         onSuccess() {
           queryClient.invalidateQueries({ queryKey: ["samples"] });
+          queryClient.invalidateQueries({ queryKey: ["get-samples-by-pid"] });
+
           toast.success("واحد تولیدی شما با موفقیت ویرایش شد", {
             position: "top-center",
           });
@@ -77,13 +91,15 @@ const SamplesForm = () => {
 
   return (
     <form className="space-y-4" onSubmit={onSubmit}>
-      <div>
-        <Label>واحد تولیدی</Label>
-        <ProductionUnit form={form} />
-        <span className="text-error-500 text-xs">
-          {errors.productionUnitId && errors.productionUnitId.message}
-        </span>
-      </div>
+      {!isSampleOperator && (
+        <div>
+          <Label>واحد تولیدی</Label>
+          <ProductionUnit form={form} />
+          <span className="text-error-500 text-xs">
+            {errors.productionUnitId && errors.productionUnitId.message}
+          </span>
+        </div>
+      )}
 
       <div>
         <Label>مشخصات فرآورده</Label>

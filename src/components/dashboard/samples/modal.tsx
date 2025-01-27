@@ -6,12 +6,20 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useEffect } from "react";
-import ProductionUnitsForm from "./form";
+import SampleForm from "./form";
 import { useSampleStore } from "@/store/dashboard/use-sample-store";
 import DeleteSample from "./delete";
 
 const SampleModal = () => {
-  const { open, setOpen, setData, setStep, step } = useSampleStore();
+  const {
+    open,
+    setOpen,
+    setData,
+    setStep,
+    step,
+    setIsSampleOperator,
+    setProductionId,
+  } = useSampleStore();
 
   const showTitle = () => {
     switch (step) {
@@ -44,8 +52,10 @@ const SampleModal = () => {
     if (!open) {
       setData(null);
       setStep(null);
+      setIsSampleOperator(false);
+      setProductionId(null);
     }
-  }, [open, setData, setStep]);
+  }, [open, setData, setIsSampleOperator, setProductionId, setStep]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -58,7 +68,7 @@ const SampleModal = () => {
           <DialogDescription>{showDescription()}</DialogDescription>
         </DialogHeader>
 
-        {(step === "create" || step === "edit") && <ProductionUnitsForm />}
+        {(step === "create" || step === "edit") && <SampleForm />}
         {step === "delete" && <DeleteSample />}
       </DialogContent>
     </Dialog>
