@@ -36,7 +36,6 @@ const BreadcrumbComponent = () => {
       <BreadcrumbList>
         {crumbs.map((crumb, idx) => {
           const isLast = idx === crumbs.length - 1;
-          // console.log(crumb.title);
 
           return (
             <Fragment key={crumb.href}>
@@ -70,4 +69,5 @@ const PAGES = {
   profile: "پروفایل",
   samples: "نمونه ها",
   "collaborating labs": "آزمایشگاه همکار",
+  "sampling operations": "عملیات",
 };
