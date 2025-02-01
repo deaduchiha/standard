@@ -6,9 +6,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getSampleByProductsUnitId } from "@/api/samples";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Terminal } from "lucide-react";
 import { useSampleStore } from "@/store/dashboard/use-sample-store";
 import SampleModal from "../samples/modal";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function Step2() {
   const { watch, setValue } = useFormContext<TFormData>();
@@ -31,7 +32,7 @@ export default function Step2() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-lg font-semibold">مرحله سوم: انتخاب نمونه ها</h2>
+        <h2 className="text-lg font-semibold">مرحله دوم: انتخاب نمونه ها</h2>
         <Button onClick={createSampleHandler} variant={"outline"}>
           <Plus />
           افزودن نمونه جدید
@@ -44,8 +45,8 @@ export default function Step2() {
           <Skeleton className="w-20 h-4" />
           <Skeleton className="w-20 h-4" />
         </>
-      ) : (
-        data?.samples.map((option) => (
+      ) : data && !!data.samples.length ? (
+        data.samples.map((option) => (
           <div key={option.id} className="flex items-center gap-2">
             <Checkbox
               id={String(option.id)}
@@ -65,6 +66,16 @@ export default function Step2() {
             </label>
           </div>
         ))
+      ) : (
+        <div>
+          <Alert variant={"destructive"}>
+            <Terminal className="h-4 w-4 rotate-180" />
+            <AlertTitle>اطلاع</AlertTitle>
+            <AlertDescription>
+              برای واحد تولیدی مورد نظر نمونه ای ثبت نشده است.
+            </AlertDescription>
+          </Alert>
+        </div>
       )}
       <SampleModal />
     </div>

@@ -13,13 +13,16 @@ import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { login, TLoginBody } from "@/api/auth";
 import { LoaderCircle } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 export const runtime = "edge";
 
 export default function Home() {
   const router = useRouter();
   const token = Cookies.get("token");
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const toggleVisibility = () => setIsVisible((prevState) => !prevState);
 
   useEffect(() => {
     if (token) {
@@ -77,21 +80,46 @@ export default function Home() {
             {LOGIN.map(({ id, label }) => (
               <div key={id} className="space-y-2 text-right">
                 <Label htmlFor={label}>{label}</Label>
-                <Input
-                  {...register(id, {
-                    onChange() {
-                      if (errors.root) {
-                        clearErrors("root");
-                      }
-                    },
-                  })}
-                  id={id}
-                  type="text"
-                  placeholder={label}
-                  className={
-                    errors[id] && "border-red-500 focus-visible:ring-0"
-                  }
-                />
+                <div className="relative">
+                  <Input
+                    {...register(id, {
+                      onChange() {
+                        if (errors.root) {
+                          clearErrors("root");
+                        }
+                      },
+                    })}
+                    id={id}
+                    type={
+                      id === "password"
+                        ? isVisible
+                          ? "text"
+                          : "password"
+                        : "text"
+                    }
+                    placeholder={label}
+                    className={
+                      errors[id] && "border-red-500 focus-visible:ring-0"
+                    }
+                  />
+
+                  {id === "password" && (
+                    <button
+                      className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+                      type="button"
+                      onClick={toggleVisibility}
+                      aria-label={isVisible ? "Hide password" : "Show password"}
+                      aria-pressed={isVisible}
+                      aria-controls="password"
+                    >
+                      {isVisible ? (
+                        <EyeOff size={16} strokeWidth={2} aria-hidden="true" />
+                      ) : (
+                        <Eye size={16} strokeWidth={2} aria-hidden="true" />
+                      )}
+                    </button>
+                  )}
+                </div>
                 {errors[id] && (
                   <span className="mt-2 inline-block text-sm text-red-500">
                     {errors[id].message}

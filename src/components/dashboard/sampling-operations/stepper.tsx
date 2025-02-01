@@ -24,6 +24,7 @@ import {
   postSamplingOperations,
   TPostSamplingOperators,
 } from "@/api/sampling-operations";
+import { queryClient } from "@/app/Providers";
 
 const hasPostalBarcode = z.discriminatedUnion("receiver", [
   z.object({
@@ -143,7 +144,6 @@ export function Stepper() {
   });
 
   const onSubmit = (data: TFormData) => {
-    console.log(data);
     mutate(
       {
         productionUnitId: +data.step1,
@@ -189,7 +189,13 @@ export function Stepper() {
     }
   };
 
-  const prevStep = () => setStep((prevStep) => Math.max(prevStep - 1, 1));
+  const prevStep = () => {
+    if (step === 2) {
+      queryClient.removeQueries({ queryKey: ["get-samples-by-pid"] });
+    }
+
+    setStep((prevStep) => Math.max(prevStep - 1, 1));
+  };
 
   return (
     <FormProvider {...methods}>
