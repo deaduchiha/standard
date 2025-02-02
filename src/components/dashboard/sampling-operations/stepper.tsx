@@ -25,6 +25,7 @@ import {
   TPostSamplingOperators,
 } from "@/api/sampling-operations";
 import { queryClient } from "@/app/Providers";
+import { LoaderCircle } from "lucide-react";
 
 const hasPostalBarcode = z.discriminatedUnion("receiver", [
   z.object({
@@ -138,7 +139,7 @@ export function Stepper() {
     setValue("step3", newStep3 as unknown as TFormData["step3"]);
   }, [step2Values, setValue]);
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["post-sampling-operators"],
     mutationFn: (body: TPostSamplingOperators) => postSamplingOperations(body),
   });
@@ -192,6 +193,7 @@ export function Stepper() {
   const prevStep = () => {
     if (step === 2) {
       queryClient.removeQueries({ queryKey: ["get-samples-by-pid"] });
+      methods.reset();
     }
 
     setStep((prevStep) => Math.max(prevStep - 1, 1));
@@ -219,7 +221,16 @@ export function Stepper() {
           {step < 4 ? (
             <Button onClick={nextStep}>بعدی</Button>
           ) : (
-            <Button onClick={methods.handleSubmit(onSubmit)}>ثبت عملیات</Button>
+            <Button
+              disabled={isPending}
+              onClick={methods.handleSubmit(onSubmit)}
+            >
+              {isPending ? (
+                <LoaderCircle className="animate-spin" />
+              ) : (
+                "ثبت عملیات"
+              )}
+            </Button>
           )}
         </CardFooter>
       </Card>

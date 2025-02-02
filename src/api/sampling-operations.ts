@@ -1,5 +1,6 @@
 import { TFormData } from "@/components/dashboard/sampling-operations/form";
 import { api } from "@/lib/services";
+import { TSamplingOperation } from "@/types/api/sampling-operators";
 
 export type TPostSamplingOperators = {
   productionUnitId: number;
@@ -12,3 +13,7 @@ export const postSamplingOperations = (body: TPostSamplingOperators) =>
     method: "POST",
     body,
   });
+
+export const getSamplingOperations = (): Promise<{
+  samplingOperations: TSamplingOperation[];
+}> => api("sampling-operations");

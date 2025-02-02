@@ -36,41 +36,9 @@ import { Info } from "lucide-react";
 import { getIndustryType, getTInspectionType } from "@/constants/sample-farsi";
 import { TIndustryType, TInspectionType } from "@/types/api/samples";
 import { receiverType, TReceiver } from "@/constants/receiver";
+import { TSampleLab, TSamplingOperation } from "@/types/api/sampling-operators";
 
-interface SamplingOperation {
-  id: number;
-  sampler: { fullname: string };
-  productionUnit: {
-    name: string;
-    brandName: string;
-    address: string;
-    phone: string;
-  };
-  Payment: {
-    state: boolean;
-    number: number;
-    pricePerUnit: number;
-    transportationPrice: number;
-  };
-  sampleLabs: Array<{
-    id: number;
-    deliveryDate: string;
-    receiver: string;
-    sample: {
-      barcode: string;
-      nameAndDescription: string;
-      inspectionType: string;
-      IndustryType: string;
-    };
-    collaboratingLab: {
-      name: string;
-      address: string;
-      phone: string;
-    };
-  }>;
-}
-
-const columns: ColumnDef<SamplingOperation>[] = [
+const columns: ColumnDef<TSamplingOperation>[] = [
   {
     accessorKey: "sampler.fullname",
     header: "نمونه بردار",
@@ -116,11 +84,7 @@ const columns: ColumnDef<SamplingOperation>[] = [
   },
 ];
 
-function SampleLabsModal({
-  sampleLabs,
-}: {
-  sampleLabs: SamplingOperation["sampleLabs"];
-}) {
+function SampleLabsModal({ sampleLabs }: { sampleLabs: TSampleLab[] }) {
   const [isOpen, setIsOpen] = useState(false);
 
   // Assuming all samples are the same, we'll use the first one for display
@@ -139,6 +103,7 @@ function SampleLabsModal({
               اطلاعات مربوط به نمونه و آزمایشگاه‌های همکار مرتبط با آن.
             </DialogDescription>
           </DialogHeader>
+
           <div className="space-y-4">
             <div className="border p-4 rounded-lg">
               <h3 className="font-semibold text-lg mb-2">اطلاعات نمونه</h3>
@@ -199,7 +164,7 @@ function SampleLabsModal({
 export default function SamplingOperationsTable({
   data,
 }: {
-  data: SamplingOperation[];
+  data: TSamplingOperation[];
 }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const table = useReactTable({
