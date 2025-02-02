@@ -37,6 +37,7 @@ import { getIndustryType, getTInspectionType } from "@/constants/sample-farsi";
 import { TIndustryType, TInspectionType } from "@/types/api/samples";
 import { receiverType, TReceiver } from "@/constants/receiver";
 import { TSampleLab, TSamplingOperation } from "@/types/api/sampling-operators";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const columns: ColumnDef<TSamplingOperation>[] = [
   {
@@ -199,26 +200,40 @@ export default function SamplingOperationsTable({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+          {table.getRowModel().rows?.length
+            ? table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            : Array(5)
+                .fill(null)
+                .map((_, i) => (
+                  <TableRow key={i}>
+                    <TableCell>
+                      <Skeleton className="w-1/2 h-5" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="w-1/2 h-5" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="w-1/2 h-5" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="w-1/2 h-5" />
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
         </TableBody>
       </Table>
     </div>
