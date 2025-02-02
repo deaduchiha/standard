@@ -1,4 +1,4 @@
-type TReceiver = "Lab" | "Lab Representative" | "Postal Companies";
+export type TReceiver = "Lab" | "Lab Representative" | "Postal Companies";
 
 export const receiverMap: Record<TReceiver, string> = {
   Lab: "آزمایشگاه",
