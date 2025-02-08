@@ -17,3 +17,8 @@ export const postSamplingOperations = (body: TPostSamplingOperators) =>
 export const getSamplingOperations = (): Promise<{
   samplingOperations: TSamplingOperation[];
 }> => api("sampling-operations");
+
+export const changePaymentStatus = (id: number) =>
+  api(`sampling-operations/payment-status/${id}`, {
+    method: "PATCH",
+  });

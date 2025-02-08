@@ -32,12 +32,18 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Info } from "lucide-react";
+import { EllipsisVertical, Info } from "lucide-react";
 import { getIndustryType, getTInspectionType } from "@/constants/sample-farsi";
 import { TIndustryType, TInspectionType } from "@/types/api/samples";
 import { receiverType, TReceiver } from "@/constants/receiver";
 import { TSampleLab, TSamplingOperation } from "@/types/api/sampling-operators";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import ChangeStatus from "./_change-status";
 
 const columns: ColumnDef<TSamplingOperation>[] = [
   {
@@ -81,7 +87,25 @@ const columns: ColumnDef<TSamplingOperation>[] = [
   {
     accessorKey: "sampleLabs",
     header: "نمونه ها",
-    cell: ({ row }) => <SampleLabsModal sampleLabs={row.original.sampleLabs} />,
+    cell: ({ row }) => {
+      const { id } = row.original;
+      return (
+        <div className="flex gap-2">
+          <SampleLabsModal sampleLabs={row.original.sampleLabs} />
+
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button size={"icon"} variant={"ghost"}>
+                <EllipsisVertical />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent align="end">
+              <ChangeStatus id={id} />
+            </PopoverContent>
+          </Popover>
+        </div>
+      );
+    },
   },
 ];
 
