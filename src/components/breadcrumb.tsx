@@ -70,4 +70,5 @@ const PAGES = {
   samples: "نمونه ها",
   "collaborating labs": "آزمایشگاه همکار",
   "sampling operations": "عملیات",
+  payments: "مالی",
 };

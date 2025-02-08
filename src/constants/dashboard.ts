@@ -27,6 +27,7 @@ export const ADMIN_DASHBOARD: MenuItem[] = [
       { label: "نمونه", href: "/dashboard/samples" },
       { label: "آزمایشگاه همکار", href: "/dashboard/collaborating-labs" },
       { label: "عملیات", href: "/dashboard/sampling-operations" },
+      { label: "مالی", href: "/dashboard/payments" },
     ],
   },
 ];
