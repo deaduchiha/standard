@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -111,7 +111,11 @@ export const formSchema = z.object({
     .and(hasSamplerTransportation),
 });
 
-export function Stepper() {
+export function Stepper({
+  setOpen,
+}: {
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) {
   const [step, setStep] = useState(1);
   const methods = useForm<TFormData>({
     resolver: zodResolver(formSchema),
@@ -153,6 +157,7 @@ export function Stepper() {
       },
       {
         onSuccess(d) {
+          setOpen(false);
           console.log(d);
         },
       }

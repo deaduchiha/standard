@@ -10,10 +10,13 @@ import {
 import { Stepper } from "@/components/dashboard/sampling-operations/stepper";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const AddNew = () => {
+  const [open, setOpen] = useState<boolean>(false);
+
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button>ایجاد عملیات جدید </Button>
       </AlertDialogTrigger>
@@ -28,7 +31,7 @@ const AddNew = () => {
           </AlertDialogCancel>
         </AlertDialogHeader>
         <div className="mt-4">
-          <Stepper />
+          <Stepper setOpen={setOpen} />
         </div>
       </AlertDialogContent>
     </AlertDialog>
