@@ -158,7 +158,7 @@ export function DataTable({ columns, data }: DataTableProps) {
         </Table>
       </div>
 
-      <div className="w-full">
+      <div className="w-full mt-4">
         <TablePagination table={table} id={id} />
       </div>
     </div>
