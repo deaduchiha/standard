@@ -9,16 +9,16 @@ export type TPostSamplingOperators = {
 };
 
 export const postSamplingOperations = (body: TPostSamplingOperators) =>
-  api("sampling-operations", {
+  api("/sampling/sampling-operations", {
     method: "POST",
     body,
   });
 
 export const getSamplingOperations = (): Promise<{
   samplingOperations: TSamplingOperation[];
-}> => api("sampling-operations");
+}> => api("/sampling/sampling-operations");
 
 export const changePaymentStatus = (id: number) =>
-  api(`sampling-operations/payment-status/${id}`, {
+  api(`/sampling/sampling-operations/payment-status/${id}`, {
     method: "PATCH",
   });

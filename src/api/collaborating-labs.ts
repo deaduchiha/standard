@@ -5,10 +5,11 @@ import { TCreateCollaboratingLab } from "@/types/validations/collaborating-labs"
 
 export const getCollaboratingLabs = (
   query: TQueryParams
-): Promise<TCollaboratingLabs> => api("/collaborating-labs", { query });
+): Promise<TCollaboratingLabs> =>
+  api("/sampling/collaborating-labs", { query });
 
 export const postCollaboratingLabs = (body: TCreateCollaboratingLab) =>
-  api("/collaborating-labs", {
+  api("/sampling/collaborating-labs", {
     method: "POST",
     body,
   });
@@ -17,12 +18,12 @@ export const editCollaboratingLabs = (
   body: TCreateCollaboratingLab,
   id: number
 ) =>
-  api(`/collaborating-labs/${id}`, {
+  api(`/sampling/collaborating-labs/${id}`, {
     method: "PUT",
     body,
   });
 
 export const deleteCollaboratingLabs = (id: number) =>
-  api(`/collaborating-labs/${id}`, {
+  api(`/sampling/collaborating-labs/${id}`, {
     method: "DELETE",
   });

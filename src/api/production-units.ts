@@ -8,23 +8,23 @@ export const getProductionUnits = (
   productionUnits: (TProductionUnits & { id: number })[];
   totalPages: number;
 }> =>
-  api("/production-units", {
+  api("/sampling/production-units", {
     query,
   });
 
 export const deleteProductionUnits = (id: number) =>
-  api(`/production-units/${id}`, {
+  api(`/sampling/production-units/${id}`, {
     method: "DELETE",
   });
 
 export const createProductionUnits = (body: TProductionUnits) =>
-  api("/production-units", {
+  api("/sampling/production-units", {
     body,
     method: "POST",
   });
 
 export const editProductionUnits = (body: TProductionUnits, id: number) =>
-  api(`/production-units/${id}`, {
+  api(`/sampling/production-units/${id}`, {
     body,
     method: "PUT",
   });

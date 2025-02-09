@@ -4,24 +4,24 @@ import { TQueryParams } from "@/types/query-params";
 import { TCreateSample } from "@/types/validations/samples";
 
 export const getSamples = (query: TQueryParams): Promise<TSamples> =>
-  api("/samples", {
+  api("/sampling/samples", {
     query,
   });
 
 export const postSample = (body: TCreateSample) =>
-  api("/samples/", {
+  api("/sampling/samples/", {
     method: "POST",
     body,
   });
 
 export const editSample = (body: TCreateSample, id: number) =>
-  api(`/samples/${id}`, {
+  api(`/sampling/samples/${id}`, {
     method: "PUT",
     body,
   });
 
 export const deleteSample = (id: number) =>
-  api(`/samples/${id}`, {
+  api(`/sampling/samples/${id}`, {
     method: "DELETE",
   });
 
