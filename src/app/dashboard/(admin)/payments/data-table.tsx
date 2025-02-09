@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, CircleX, ListFilter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -31,6 +31,8 @@ import {
 } from "@/components/ui/table";
 import { TPayment } from "@/types/api/payments";
 import TablePagination from "./table-pagination";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps {
   columns: ColumnDef<TPayment>[];
@@ -46,6 +48,7 @@ export function DataTable({ columns, data }: DataTableProps) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const table = useReactTable({
     data,
@@ -68,7 +71,58 @@ export function DataTable({ columns, data }: DataTableProps) {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex gap-4 items-center py-4">
+        <div className="relative">
+          <Input
+            id={`${id}-input`}
+            ref={inputRef}
+            className={cn(
+              "peer min-w-60 ps-9",
+              Boolean(
+                table
+                  .getColumn("SamplingOperation_productionUnit_name")
+                  ?.getFilterValue()
+              ) && "pe-9"
+            )}
+            value={
+              (table
+                .getColumn("SamplingOperation_productionUnit_name")
+                ?.getFilterValue() ?? "") as string
+            }
+            onChange={(e) =>
+              table
+                .getColumn("SamplingOperation_productionUnit_name")
+                ?.setFilterValue(e.target.value)
+            }
+            placeholder="جست و جو"
+            type="text"
+            aria-label="Filter by SamplingOperation_productionUnit_name or email"
+          />
+          <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
+            <ListFilter size={16} strokeWidth={2} aria-hidden="true" />
+          </div>
+          {Boolean(
+            table
+              .getColumn("SamplingOperation_productionUnit_name")
+              ?.getFilterValue()
+          ) && (
+            <button
+              className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+              aria-label="Clear filter"
+              onClick={() => {
+                table
+                  .getColumn("SamplingOperation_productionUnit_name")
+                  ?.setFilterValue("");
+                if (inputRef.current) {
+                  inputRef.current.focus();
+                }
+              }}
+            >
+              <CircleX size={16} strokeWidth={2} aria-hidden="true" />
+            </button>
+          )}
+        </div>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
