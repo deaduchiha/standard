@@ -9,6 +9,7 @@ const Page = () => {
     queryKey: ["sampling-operations"],
     queryFn: getSamplingOperations,
   });
+
   return (
     <>
       <div className="mb-6">
@@ -16,8 +17,6 @@ const Page = () => {
       </div>
       <SamplingOperationsTable data={data?.samplingOperations ?? []} />
     </>
-    // <main className="flex flex-col items-center justify-center p-10">
-    // </main>
   );
 };
 

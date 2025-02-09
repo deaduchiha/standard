@@ -1,3 +1,6 @@
+import { TReceiver } from "@/constants/receiver";
+import { TIndustryType, TInspectionType } from "./samples";
+
 export type TSampleLab = {
   id: number;
   deliveryDate: string;
@@ -15,20 +18,41 @@ export type TSampleLab = {
   };
 };
 
-export type TSamplingOperation = {
+interface Sample {
   id: number;
-  sampler: { fullname: string };
-  productionUnit: {
-    name: string;
-    brandName: string;
-    address: string;
-    phone: string;
-  };
+  nameAndDescription: string;
+  inspectionType: TInspectionType;
+  IndustryType: TIndustryType;
+}
+
+interface CollaboratingLab {
+  id: number;
+  name: string;
+}
+interface SampleLab {
+  id: number;
+  deliveryDate: Date;
+  receiver: TReceiver;
+  postalBarcode: string | null;
+  sample: Sample;
+  collaboratingLab: CollaboratingLab;
+}
+
+export type GroupedSampleLab = {
+  sample: Sample;
+  labs: Array<Omit<SampleLab, "sample">>;
+};
+
+export type TSamplingOperation = {
   Payment: {
     state: boolean;
-    number: number;
-    pricePerUnit: number;
-    transportationPrice: number;
+    id: number;
   };
-  sampleLabs: TSampleLab[];
+  id: number;
+  productionUnit: {
+    name: string;
+    id: number;
+  };
+  sampleLabs: GroupedSampleLab[];
+  sampler: { fullname: string };
 };
