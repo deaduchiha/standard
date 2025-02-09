@@ -22,3 +22,9 @@ export const changePaymentStatus = (id: number) =>
   api(`/sampling/operations/payment-status/${id}`, {
     method: "PATCH",
   });
+
+export const getSamplingOperationsById = (
+  id: number
+): Promise<{
+  samplingOperation: TSamplingOperation;
+}> => api(`/sampling/operations/${id}`);
