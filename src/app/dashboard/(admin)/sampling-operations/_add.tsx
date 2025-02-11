@@ -18,7 +18,9 @@ const AddNew = () => {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button>ایجاد عملیات جدید </Button>
+        <Button variant={"outline"} size={"sm"}>
+          ایجاد عملیات جدید{" "}
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
