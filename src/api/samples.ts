@@ -27,4 +27,4 @@ export const deleteSample = (id: number) =>
 
 export const getSampleByProductsUnitId = (
   id: string | number
-): Promise<TSamples> => api(`samples/production-units/${id}`);
+): Promise<TSamples> => api(`sampling/samples/production-units/${id}`);

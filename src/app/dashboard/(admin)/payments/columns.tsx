@@ -91,7 +91,6 @@ export const columns: ColumnDef<TPayment>[] = [
     id: "actions",
     cell: ({ row }) => {
       const { id } = row.original;
-      console.log(id);
 
       return (
         <DropdownMenu>

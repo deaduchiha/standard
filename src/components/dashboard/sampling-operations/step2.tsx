@@ -20,6 +20,7 @@ export default function Step2() {
     queryKey: ["get-samples-by-pid"],
     queryFn: () => getSampleByProductsUnitId(productId),
   });
+
   const { setProductionId, setOpen, setStep, setIsSampleOperator } =
     useSampleStore();
   const createSampleHandler = useCallback(() => {

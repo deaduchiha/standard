@@ -43,7 +43,6 @@ const SamplesForm = () => {
       setValue("productionUnitId", productionId!);
       reset({ controlSample: false, productionUnitId: productionId! });
     }
-    console.log(form.watch("productionUnitId"));
   }, [data, form, isSampleOperator, productionId, reset, setValue]);
 
   const { mutate, isPending } = useMutation({

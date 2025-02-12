@@ -211,8 +211,6 @@ export default function SamplingOperationsTable({
 }: {
   data: TSamplingOperation[];
 }) {
-  console.log(data);
-
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const table = useReactTable({
     data,

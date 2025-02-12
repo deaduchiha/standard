@@ -134,8 +134,6 @@ export function DataTable({ columns, data }: DataTableProps) {
               .getAllColumns()
               .filter((column) => column.getCanHide())
               .map((column) => {
-                console.log(column.id);
-
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}

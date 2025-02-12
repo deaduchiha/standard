@@ -43,8 +43,6 @@ const Page = () => {
 
   const onSubmit = handleSubmit(
     ({ confirmPassword, newPassword, oldPassword }) => {
-      console.log("A");
-
       if (confirmPassword !== newPassword) {
         setError("root", {
           message: "تکرار رمز عبور جدید اشتباه است",

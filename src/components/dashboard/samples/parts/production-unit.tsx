@@ -31,8 +31,6 @@ const ProductionUnit: FC<TProps> = ({ form }) => {
       control={control}
       name="productionUnitId"
       render={({ field }) => {
-        console.log(field.value);
-
         return (
           <Select
             onValueChange={field.onChange}
