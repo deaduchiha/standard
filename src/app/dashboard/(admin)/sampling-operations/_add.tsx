@@ -8,7 +8,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Stepper } from "@/components/dashboard/sampling-operations/stepper";
-import { X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
@@ -18,8 +18,8 @@ const AddNew = () => {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant={"outline"} size={"sm"}>
-          ایجاد عملیات جدید{" "}
+        <Button variant={"outline"}>
+          ایجاد عملیات جدید <Plus />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

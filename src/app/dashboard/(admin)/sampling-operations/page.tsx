@@ -12,7 +12,7 @@ const Page = () => {
 
   return (
     <>
-      <div className="mb-6">
+      <div className="mb-6 flex w-full justify-end">
         <AddNew />
       </div>
       <SamplingOperationsTable data={data?.samplingOperations ?? []} />
